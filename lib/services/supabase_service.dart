@@ -42,8 +42,6 @@ class SupabaseService {
           return bv.compareTo(av);
         });
       }
-
-      debugPrint('📦 fetchAll($table): ${result.length} rows');
       return result;
     } on PostgrestException catch (e) {
       debugPrint('❌ fetchAll($table): ${e.message}');
