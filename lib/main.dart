@@ -7,7 +7,7 @@ import 'package:sri_hr_admin/routes/app_pages.dart';
 import 'package:sri_hr_admin/routes/app_routes.dart';
 import 'package:sri_hr_admin/services/supabase_service.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SupabaseService.initialize();
   Get.put(AppController(), permanent: true);

@@ -16,103 +16,11 @@ import 'package:sri_hr_admin/presentation/dashboard/widgets/donut_painter.dart';
 import 'package:sri_hr_admin/presentation/dashboard/widgets/shimmer.dart';
 import 'package:sri_hr_admin/presentation/dashboard/widgets/shimmer_list.dart';
 import 'package:sri_hr_admin/routes/app_routes.dart';
-import 'package:sri_hr_admin/services/supabase_service.dart';
 import 'package:sri_hr_admin/presentation/dashboard/widgets/dot_grid_painter.dart';
 import 'package:sri_hr_admin/widgets/hero_pill.dart';
 
 class DashboardController extends GetxController {
-  RxMap<String, int> counts = <String, int>{}.obs;
-  RxList<Map<String, dynamic>> recentLeaves = <Map<String, dynamic>>[].obs;
-  RxList<Map<String, dynamic>> recentAttendance = <Map<String, dynamic>>[].obs;
-  RxList<Map<String, dynamic>> recentUsers = <Map<String, dynamic>>[].obs;
-  RxList<Map<String, dynamic>> recentPayments = <Map<String, dynamic>>[].obs;
-  RxBool loading = false.obs;
-  RxString? error;
-
-  // Animation
-  late AnimationController pulseCtrl;
-  late AnimationController fadeCtrl;
-  late Animation<double> fadeAnim;
-
-  // Filter
-  String selectedPeriod = 'All Time';
-  final periods = ['All Time', 'Today', 'This Week', 'This Month'];
-
-  Future<void> load() async {
-    loading.value = true;
-    error?.value = "";
-    try {
-      final tables = [
-        'organizations',
-        'companies',
-        'departments',
-        'employees',
-        'users',
-        'roles',
-        'leave_requests',
-        'attendance_logs',
-        'payments',
-        'subscriptions',
-        'holidays',
-        'permission_requests',
-        'salary_types',
-        'subscription_plans',
-        'role_permissions',
-      ];
-      final results = await Future.wait([
-        ...tables.map((t) => SupabaseService.fetchAll(t)),
-        //Recent activity queries
-        SupabaseService.client
-            .from('leave_requests')
-            .select('*')
-            .order('created_at', ascending: false)
-            .limit(5),
-        SupabaseService.client
-            .from('attendance_logs')
-            .select('*')
-            .order('created_at', ascending: false)
-            .limit(5),
-        SupabaseService.client
-            .from('users')
-            .select('*')
-            .order('created_at', ascending: false)
-            .limit(5),
-        SupabaseService.client
-            .from('payments')
-            .select('*')
-            .order('created_at', ascending: false)
-            .limit(5),
-      ]);
-
-      final count = <String, int>{};
-      for (int i = 0; i < tables.length; i++) {
-        count[tables[i]] = (results[i] as List).length;
-      }
-
-      counts.value = count;
-      recentLeaves.value = List<Map<String, dynamic>>.from(
-        results[tables.length] as List,
-      );
-      recentAttendance.value = List<Map<String, dynamic>>.from(
-        results[tables.length + 1] as List,
-      );
-      recentUsers.value = List<Map<String, dynamic>>.from(
-        results[tables.length + 2] as List,
-      );
-      recentPayments.value = List<Map<String, dynamic>>.from(
-        results[tables.length + 3] as List,
-      );
-
-      loading.value = false;
-      fadeCtrl.forward(from: 0);
-    } catch (e) {
-      loading.value = false;
-      error?.value = e.toString();
-      debugPrint('Dashboard load error:$e');
-    }
-  }
-
-  Widget buildError() {
+  Widget buildError({required Function()? onpressed, required String? error}) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -129,12 +37,12 @@ class DashboardController extends GetxController {
           ),
           const SizedBox(height: 8),
           Text(
-            error != null ? error!.value : '',
+            error ?? '',
             style: const TextStyle(fontSize: 12, color: Colors.grey),
           ),
           const SizedBox(height: 20),
           FilledButton.icon(
-            onPressed: load,
+            onPressed: onpressed,
             icon: const Icon(Icons.refresh_rounded),
             label: const Text('Retry'),
           ),
@@ -143,184 +51,192 @@ class DashboardController extends GetxController {
     );
   }
 
-  Widget heroBanner(bool isDark) {
-    return Obx(
-      () => Container(
-        height: 180.0,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          gradient: const LinearGradient(
-            colors: [Color(0xFF060B18), Color(0xFF0D1B35), Color(0xFF0A1628)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+  Widget heroBanner(
+    bool isDark, {
+    required AnimationController pulseCtrl,
+    required Map<String, int> counts,
+  }) {
+    return Container(
+      height: 180.0,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        gradient: const LinearGradient(
+          colors: [Color(0xFF060B18), Color(0xFF0D1B35), Color(0xFF0A1628)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        child: Stack(
-          children: [
-            // Animated orb
-            AnimatedBuilder(
-              animation: pulseCtrl,
-              builder: (_, _) => Positioned(
-                right: -40 + pulseCtrl.value * 20,
-                top: -40 + pulseCtrl.value * 10,
-                child: Container(
-                  width: 200 + pulseCtrl.value * 30,
-                  height: 200 + pulseCtrl.value * 30,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: RadialGradient(
-                      colors: [
-                        const Color(0xFF3B82F6).withOpacity(0.12),
-                        Colors.transparent,
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              left: 180,
-              top: 20,
+      ),
+      child: Stack(
+        children: [
+          // Animated orb
+          AnimatedBuilder(
+            animation: pulseCtrl,
+            builder: (_, _) => Positioned(
+              right: -40 + pulseCtrl.value * 20,
+              top: -40 + pulseCtrl.value * 10,
               child: Container(
-                width: 80,
-                height: 80,
+                width: 200 + pulseCtrl.value * 30,
+                height: 200 + pulseCtrl.value * 30,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: const Color(0xFF06B6D4).withOpacity(0.08),
+                  gradient: RadialGradient(
+                    colors: [
+                      const Color(0xFF3B82F6).withOpacity(0.12),
+                      Colors.transparent,
+                    ],
+                  ),
                 ),
               ),
             ),
-            CustomPaint(
-              size: const Size(double.infinity, 180),
-              painter: DotGridPainter(),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(28, 22, 24, 22),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Badge
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF3B82F6).withOpacity(0.18),
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: const Color(0xFF3B82F6).withOpacity(0.35),
-                            ),
-                          ),
-                          child: const Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.verified_rounded,
-                                color: Color(0xFF60A5FA),
-                                size: 11,
-                              ),
-                              SizedBox(width: 5),
-                              Text(
-                                'SUPER ADMIN',
-                                style: TextStyle(
-                                  color: Color(0xFF60A5FA),
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w800,
-                                  letterSpacing: 1.1,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        //Title
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Sri HR Admin',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 24,
-                                fontWeight: FontWeight.w900,
-                                letterSpacing: -0.5,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              'Complete HR operations control panel',
-                              style: TextStyle(
-                                color: Colors.white.withOpacity(0.45),
-                                fontSize: 12.5,
-                              ),
-                            ),
-                          ],
-                        ),
-                        // Pills
-                        Row(
-                          children: [
-                            HeroPill(
-                              n: '${counts['companies'] ?? 0}',
-                              label: 'Companies',
-                              icon: Icons.business_rounded,
-                              color: Color(0xFF3B82F6),
-                            ),
-                            const SizedBox(width: 8),
-                            HeroPill(
-                              n: '${counts['employees'] ?? 0}',
-                              label: 'Employees',
-                              icon: Icons.people_rounded,
-                              color: Color(0xFF10B981),
-                            ),
-                            const SizedBox(width: 8),
-                            HeroPill(
-                              n: '${counts['subscriptions'] ?? 0}',
-                              label: "Subs",
-                              icon: Icons.workspace_premium_rounded,
-                              color: Color(0xFF8B5CF6),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Icon
-                  Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                        colors: [
-                          const Color(0xFF3B82F6).withOpacity(0.2),
-                          const Color(0xFF06B6D4).withOpacity(0.2),
-                        ],
-                      ),
-                      border: Border.all(
-                        color: Colors.white.withOpacity(0.12),
-                        width: 1.5,
-                      ),
-                    ),
-                    child: const Icon(
-                      Icons.admin_panel_settings_rounded,
-                      color: Colors.white,
-                      size: 38,
-                    ),
-                  ),
-                ],
+          ),
+          Positioned(
+            left: 180,
+            top: 20,
+            child: Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: const Color(0xFF06B6D4).withOpacity(0.08),
               ),
             ),
-          ],
-        ),
+          ),
+          CustomPaint(
+            size: const Size(double.infinity, 180),
+            painter: DotGridPainter(),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(28, 22, 24, 22),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Badge
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF3B82F6).withOpacity(0.18),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: const Color(0xFF3B82F6).withOpacity(0.35),
+                          ),
+                        ),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.verified_rounded,
+                              color: Color(0xFF60A5FA),
+                              size: 11,
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              'SUPER ADMIN',
+                              style: TextStyle(
+                                color: Color(0xFF60A5FA),
+                                fontSize: 10,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 1.1,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      //Title
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Sri HR Admin',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: -0.5,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Complete HR operations control panel',
+                            style: TextStyle(
+                              color: Colors.white.withOpacity(0.45),
+                              fontSize: 12.5,
+                            ),
+                          ),
+                        ],
+                      ),
+                      // Pills
+                      Row(
+                        children: [
+                          HeroPill(
+                            n: '${counts['companies'] ?? 0}',
+                            label: 'Companies',
+                            icon: Icons.business_rounded,
+                            color: Color(0xFF3B82F6),
+                          ),
+                          const SizedBox(width: 8),
+                          HeroPill(
+                            n: '${counts['employees'] ?? 0}',
+                            label: 'Employees',
+                            icon: Icons.people_rounded,
+                            color: Color(0xFF10B981),
+                          ),
+                          const SizedBox(width: 8),
+                          HeroPill(
+                            n: '${counts['subscriptions'] ?? 0}',
+                            label: "Subs",
+                            icon: Icons.workspace_premium_rounded,
+                            color: Color(0xFF8B5CF6),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                // Icon
+                Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      colors: [
+                        const Color(0xFF3B82F6).withOpacity(0.2),
+                        const Color(0xFF06B6D4).withOpacity(0.2),
+                      ],
+                    ),
+                    border: Border.all(
+                      color: Colors.white.withOpacity(0.12),
+                      width: 1.5,
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.admin_panel_settings_rounded,
+                    color: Colors.white,
+                    size: 38,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget kpiRow(bool isDark) {
+  Widget kpiRow(
+    bool isDark, {
+    required Map<String, int> counts,
+    required List<Map<String, dynamic>> recentLeaves,
+    required AnimationController pulseCtrl,
+    required bool loading,
+  }) {
     final kpis = [
       KPI(
         'Total Employees',
@@ -456,46 +372,42 @@ class DashboardController extends GetxController {
                           ),
                         ],
                       ),
-                      Obx(
-                        () => Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            loading.value
-                                ? ShimmerWidget(
-                                    isDark: isDark,
-                                    w: 44,
-                                    h: 26,
-                                    pulseCtrl: pulseCtrl,
-                                  )
-                                : TweenAnimationBuilder<int>(
-                                    tween: IntTween(begin: 0, end: k.value),
-                                    duration: const Duration(
-                                      milliseconds: 1000,
-                                    ),
-                                    curve: Curves.easeOut,
-                                    builder: (_, v, _) => Text(
-                                      '$v',
-                                      style: TextStyle(
-                                        fontSize: 26,
-                                        fontWeight: FontWeight.w800,
-                                        color: k.color,
-                                        height: 1,
-                                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          loading
+                              ? ShimmerWidget(
+                                  isDark: isDark,
+                                  w: 44,
+                                  h: 26,
+                                  pulseCtrl: pulseCtrl,
+                                )
+                              : TweenAnimationBuilder<int>(
+                                  tween: IntTween(begin: 0, end: k.value),
+                                  duration: const Duration(milliseconds: 1000),
+                                  curve: Curves.easeOut,
+                                  builder: (_, v, _) => Text(
+                                    '$v',
+                                    style: TextStyle(
+                                      fontSize: 26,
+                                      fontWeight: FontWeight.w800,
+                                      color: k.color,
+                                      height: 1,
                                     ),
                                   ),
+                                ),
 
-                            const SizedBox(height: 3),
-                            Text(
-                              k.label,
-                              style: TextStyle(
-                                fontSize: 11.5,
-                                color: isDark
-                                    ? const Color(0xFF94A3B8)
-                                    : const Color(0xFF64748B),
-                              ),
+                          const SizedBox(height: 3),
+                          Text(
+                            k.label,
+                            style: TextStyle(
+                              fontSize: 11.5,
+                              color: isDark
+                                  ? const Color(0xFF94A3B8)
+                                  : const Color(0xFF64748B),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -508,22 +420,40 @@ class DashboardController extends GetxController {
     );
   }
 
-  Widget recentActivitySection(bool isDark) {
+  Widget recentActivitySection(
+    bool isDark, {
+    required bool loading,
+    required AnimationController pulseCtrl,
+    required List<Map<String, dynamic>> recentLeaves,
+    required List<Map<String, dynamic>> recentAttendance,
+    required List<Map<String, dynamic>> recentUsers,
+    required List<Map<String, dynamic>> recentPayments,
+  }) {
     return CardWidget(
       isDark: isDark,
       icon: Icons.timeline_rounded,
       iconColor: Colors.purple,
       title: 'Recent Activity',
       subtitle: 'Latest events across all modules',
-      child: Obx(
-        () => loading.value
-            ? ShimmerList(isDark: isDark, pulseCtrl: pulseCtrl)
-            : buildActivityTimeline(isDark),
-      ),
+      child: loading
+          ? ShimmerList(isDark: isDark, pulseCtrl: pulseCtrl)
+          : buildActivityTimeline(
+              isDark,
+              recentAttendance: recentAttendance,
+              recentLeaves: recentLeaves,
+              recentPayments: recentPayments,
+              recentUsers: recentUsers,
+            ),
     );
   }
 
-  Widget buildActivityTimeline(bool isDark) {
+  Widget buildActivityTimeline(
+    bool isDark, {
+    required List<Map<String, dynamic>> recentLeaves,
+    required List<Map<String, dynamic>> recentAttendance,
+    required List<Map<String, dynamic>> recentUsers,
+    required List<Map<String, dynamic>> recentPayments,
+  }) {
     final activities = <Act>[];
 
     for (final l in recentLeaves.take(3)) {
@@ -729,7 +659,12 @@ class DashboardController extends GetxController {
     }
   }
 
-  Widget chartsRow(bool isDark) {
+  Widget chartsRow(
+    bool isDark, {
+    required Map<String, int> counts,
+    required bool loading,
+    required AnimationController pulseCtrl,
+  }) {
     return LayoutBuilder(
       builder: (_, box) {
         final wide = box.maxWidth > 680;
@@ -737,23 +672,54 @@ class DashboardController extends GetxController {
             ? Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(flex: 5, child: barChart(isDark)),
+                  Expanded(
+                    flex: 5,
+                    child: barChart(
+                      isDark,
+                      counts: counts,
+                      loading: loading,
+                      pulseCtrl: pulseCtrl,
+                    ),
+                  ),
                   const SizedBox(width: 16),
-                  Expanded(flex: 4, child: donutChart(isDark)),
+                  Expanded(
+                    flex: 4,
+                    child: donutChart(
+                      isDark,
+                      counts: counts,
+                      loading: loading,
+                      pulseCtrl: pulseCtrl,
+                    ),
+                  ),
                 ],
               )
             : Column(
                 children: [
-                  barChart(isDark),
+                  barChart(
+                    isDark,
+                    counts: counts,
+                    loading: loading,
+                    pulseCtrl: pulseCtrl,
+                  ),
                   const SizedBox(height: 16),
-                  donutChart(isDark),
+                  donutChart(
+                    isDark,
+                    counts: counts,
+                    loading: loading,
+                    pulseCtrl: pulseCtrl,
+                  ),
                 ],
               );
       },
     );
   }
 
-  Widget bottomRow(bool isDark) {
+  Widget bottomRow(
+    bool isDark, {
+    required Map<String, int> counts,
+    required bool loading,
+    required AnimationController pulseCtrl,
+  }) {
     return LayoutBuilder(
       builder: (_, box) {
         final wide = box.maxWidth > 680;
@@ -761,23 +727,44 @@ class DashboardController extends GetxController {
             ? Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(flex: 2, child: quickNav(isDark)),
+                  Expanded(
+                    flex: 2,
+                    child: quickNav(
+                      isDark,
+                      counts: counts,
+                      loading: loading,
+                      pulseCtrl: pulseCtrl,
+                    ),
+                  ),
                   const SizedBox(width: 16),
-                  Expanded(flex: 3, child: summaryStats(isDark)),
+                  Expanded(
+                    flex: 3,
+                    child: summaryStats(isDark, counts: counts),
+                  ),
                 ],
               )
             : Column(
                 children: [
-                  summaryStats(isDark),
+                  summaryStats(isDark, counts: counts),
                   const SizedBox(height: 16),
-                  quickNav(isDark),
+                  quickNav(
+                    isDark,
+                    counts: counts,
+                    loading: loading,
+                    pulseCtrl: pulseCtrl,
+                  ),
                 ],
               );
       },
     );
   }
 
-  Widget quickNav(bool isDark) {
+  Widget quickNav(
+    bool isDark, {
+    required Map<String, int> counts,
+    required bool loading,
+    required AnimationController pulseCtrl,
+  }) {
     final mods = [
       Mod(
         'Organizations',
@@ -870,24 +857,23 @@ class DashboardController extends GetxController {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Obx(
-                          () => loading.value
-                              ? ShimmerWidget(
-                                  isDark: isDark,
-                                  w: 24,
-                                  h: 16,
-                                  pulseCtrl: pulseCtrl,
-                                )
-                              : Text(
-                                  '${m.count}',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w800,
-                                    color: m.color,
-                                    height: 1.1,
-                                  ),
+                        loading
+                            ? ShimmerWidget(
+                                isDark: isDark,
+                                w: 24,
+                                h: 16,
+                                pulseCtrl: pulseCtrl,
+                              )
+                            : Text(
+                                '${m.count}',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w800,
+                                  color: m.color,
+                                  height: 1.1,
                                 ),
-                        ),
+                              ),
+
                         Text(
                           m.label,
                           style: TextStyle(
@@ -910,7 +896,7 @@ class DashboardController extends GetxController {
     );
   }
 
-  Widget summaryStats(bool isDark) {
+  Widget summaryStats(bool isDark, {required Map<String, int> counts}) {
     final items = [
       SummStat(
         'Total Roles',
@@ -1030,7 +1016,12 @@ class DashboardController extends GetxController {
     );
   }
 
-  Widget barChart(bool isDark) {
+  Widget barChart(
+    bool isDark, {
+    required Map<String, int> counts,
+    required bool loading,
+    required AnimationController pulseCtrl,
+  }) {
     final bars = [
       Bar('Orgs', counts['organizations'] ?? 0, const Color(0xFF3B82F6)),
       Bar('Cos', counts['companies'] ?? 0, const Color(0xFF10B981)),
@@ -1051,97 +1042,97 @@ class DashboardController extends GetxController {
       subtitle: "All modules at a glance",
       child: SizedBox(
         height: 200,
-        child: Obx(
-          () => loading.value
-              ? BarShimmer(isDark: isDark, pulseCtrl: pulseCtrl)
-              : Column(
-                  children: [
-                    Expanded(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: bars.map((b) {
-                          final frac = b.value / maxVal;
-                          return Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 3,
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    '${b.value}',
-                                    style: TextStyle(
-                                      fontSize: 9,
-                                      fontWeight: FontWeight.w700,
-                                      color: b.color,
-                                    ),
+        child: loading
+            ? BarShimmer(isDark: isDark, pulseCtrl: pulseCtrl)
+            : Column(
+                children: [
+                  Expanded(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: bars.map((b) {
+                        final frac = b.value / maxVal;
+                        return Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 3),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  '${b.value}',
+                                  style: TextStyle(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w700,
+                                    color: b.color,
                                   ),
-                                  const SizedBox(height: 3),
-                                  TweenAnimationBuilder<double>(
-                                    tween: Tween(begin: 0, end: frac),
-                                    duration: const Duration(milliseconds: 900),
-                                    curve: Curves.elasticOut,
-                                    builder: (_, v, _) => Container(
-                                      height: (155 * v).clamp(4.0, 155.0),
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            b.color,
-                                            b.color.withOpacity(0.4),
-                                          ],
-                                          begin: Alignment.topCenter,
-                                          end: Alignment.bottomCenter,
-                                        ),
-                                        borderRadius:
-                                            const BorderRadius.vertical(
-                                              top: Radius.circular(6),
-                                            ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: b.color.withOpacity(0.3),
-                                            blurRadius: 6,
-                                            offset: const Offset(0, -2),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: bars
-                          .map(
-                            (b) => Expanded(
-                              child: Text(
-                                b.label,
-                                style: TextStyle(
-                                  fontSize: 9.5,
-                                  color: isDark
-                                      ? const Color(0xFF64748B)
-                                      : const Color(0xFF94A3B8),
-                                  fontWeight: FontWeight.w600,
                                 ),
-                                textAlign: TextAlign.center,
-                              ),
+                                const SizedBox(height: 3),
+                                TweenAnimationBuilder<double>(
+                                  tween: Tween(begin: 0, end: frac),
+                                  duration: const Duration(milliseconds: 900),
+                                  curve: Curves.elasticOut,
+                                  builder: (_, v, _) => Container(
+                                    height: (155 * v).clamp(4.0, 155.0),
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          b.color,
+                                          b.color.withOpacity(0.4),
+                                        ],
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                      ),
+                                      borderRadius: const BorderRadius.vertical(
+                                        top: Radius.circular(6),
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: b.color.withOpacity(0.3),
+                                          blurRadius: 6,
+                                          offset: const Offset(0, -2),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          )
-                          .toList(),
+                          ),
+                        );
+                      }).toList(),
                     ),
-                  ],
-                ),
-        ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: bars
+                        .map(
+                          (b) => Expanded(
+                            child: Text(
+                              b.label,
+                              style: TextStyle(
+                                fontSize: 9.5,
+                                color: isDark
+                                    ? const Color(0xFF64748B)
+                                    : const Color(0xFF94A3B8),
+                                fontWeight: FontWeight.w600,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ],
+              ),
       ),
     );
   }
 
-  Widget donutChart(bool isDark) {
+  Widget donutChart(
+    bool isDark, {
+    required Map<String, int> counts,
+    required bool loading,
+    required AnimationController pulseCtrl,
+  }) {
     final allSegs = [
       Seg('Employees', counts['employees'] ?? 0, const Color(0xFF3B82F6)),
       Seg('Users', counts['users'] ?? 0, const Color(0xFF10B981)),
@@ -1168,245 +1159,237 @@ class DashboardController extends GetxController {
       iconColor: const Color(0xFF8B5CF6),
       title: 'Data Distribution',
       subtitle: 'By category breakdown',
-      child: Obx(
-        () => loading.value
-            ? BarShimmer(isDark: isDark, pulseCtrl: pulseCtrl)
-            : total == 0
-            ? Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.donut_large_rounded,
-                        size: 48,
-                        color: Colors.grey.withOpacity(0.3),
+      child: loading
+          ? BarShimmer(isDark: isDark, pulseCtrl: pulseCtrl)
+          : total == 0
+          ? Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.donut_large_rounded,
+                      size: 48,
+                      color: Colors.grey.withOpacity(0.3),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      'No data yet',
+                      style: TextStyle(
+                        color: isDark
+                            ? const Color(0xFF64748B)
+                            : const Color(0xFF94A3B8),
+                        fontSize: 13,
                       ),
-                      const SizedBox(height: 10),
-                      Text(
-                        'No data yet',
-                        style: TextStyle(
-                          color: isDark
-                              ? const Color(0xFF64748B)
-                              : const Color(0xFF94A3B8),
-                          fontSize: 13,
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : Column(
+              children: [
+                // Donut ring built from widgets
+                SizedBox(
+                  height: 180,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // Left: donut widget
+                      Expanded(
+                        child: TweenAnimationBuilder<double>(
+                          tween: Tween(begin: 0, end: 1),
+                          duration: const Duration(milliseconds: 1100),
+                          curve: Curves.easeInOut,
+                          builder: (ctx, progress, __) {
+                            return LayoutBuilder(
+                              builder: (ctx, box) {
+                                final sz = math.min(box.maxWidth, 160.0);
+                                return SizedBox(
+                                  width: sz,
+                                  height: sz,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      // Donut ring via CustomPaint with explicit size
+                                      SizedBox(
+                                        width: sz,
+                                        height: sz,
+                                        child: CustomPaint(
+                                          painter: DonutPainter(
+                                            segs: segs,
+                                            total: total.toDouble(),
+                                            progress: progress,
+                                            isDark: isDark,
+                                          ),
+                                        ),
+                                      ),
+                                      // Center text
+                                      if (progress > 0.7)
+                                        Opacity(
+                                          opacity: ((progress - 0.7) / 0.3)
+                                              .clamp(0, 1),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                '$total',
+                                                style: TextStyle(
+                                                  fontSize: 22,
+                                                  fontWeight: FontWeight.w900,
+                                                  color: isDark
+                                                      ? Colors.white
+                                                      : const Color(0xFF1E293B),
+                                                  height: 1,
+                                                ),
+                                              ),
+                                              Text(
+                                                'records',
+                                                style: TextStyle(
+                                                  fontSize: 10,
+                                                  color: isDark
+                                                      ? const Color(0xFF64748B)
+                                                      : const Color(0xFF94A3B8),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      // Right: legend
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: segs.map((s) {
+                            final pct = total == 0
+                                ? 0.0
+                                : s.value / total * 100;
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 9),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 10,
+                                    height: 10,
+                                    decoration: BoxDecoration(
+                                      color: s.color,
+                                      borderRadius: BorderRadius.circular(3),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 7),
+                                  Expanded(
+                                    child: Text(
+                                      s.label,
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        color: isDark
+                                            ? const Color(0xFF94A3B8)
+                                            : const Color(0xFF64748B),
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    '${pct.toStringAsFixed(0)}%',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w700,
+                                      color: s.color,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    '(${s.value})',
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: isDark
+                                          ? const Color(0xFF475569)
+                                          : const Color(0xFFCBD5E1),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
                         ),
                       ),
                     ],
                   ),
                 ),
-              )
-            : Column(
-                children: [
-                  // Donut ring built from widgets
-                  SizedBox(
-                    height: 180,
+                const SizedBox(height: 10),
+                // Stacked bar as additional visual
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: SizedBox(
+                    height: 8,
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        // Left: donut widget
-                        Expanded(
+                      children: segs.map((s) {
+                        final flex = s.value;
+                        return Expanded(
+                          flex: flex > 0 ? flex : 1,
                           child: TweenAnimationBuilder<double>(
                             tween: Tween(begin: 0, end: 1),
-                            duration: const Duration(milliseconds: 1100),
-                            curve: Curves.easeInOut,
-                            builder: (ctx, progress, __) {
-                              return LayoutBuilder(
-                                builder: (ctx, box) {
-                                  final sz = math.min(box.maxWidth, 160.0);
-                                  return SizedBox(
-                                    width: sz,
-                                    height: sz,
-                                    child: Stack(
-                                      alignment: Alignment.center,
-                                      children: [
-                                        // Donut ring via CustomPaint with explicit size
-                                        SizedBox(
-                                          width: sz,
-                                          height: sz,
-                                          child: CustomPaint(
-                                            painter: DonutPainter(
-                                              segs: segs,
-                                              total: total.toDouble(),
-                                              progress: progress,
-                                              isDark: isDark,
-                                            ),
-                                          ),
-                                        ),
-                                        // Center text
-                                        if (progress > 0.7)
-                                          Opacity(
-                                            opacity: ((progress - 0.7) / 0.3)
-                                                .clamp(0, 1),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Text(
-                                                  '$total',
-                                                  style: TextStyle(
-                                                    fontSize: 22,
-                                                    fontWeight: FontWeight.w900,
-                                                    color: isDark
-                                                        ? Colors.white
-                                                        : const Color(
-                                                            0xFF1E293B,
-                                                          ),
-                                                    height: 1,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  'records',
-                                                  style: TextStyle(
-                                                    fontSize: 10,
-                                                    color: isDark
-                                                        ? const Color(
-                                                            0xFF64748B,
-                                                          )
-                                                        : const Color(
-                                                            0xFF94A3B8,
-                                                          ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        // Right: legend
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: segs.map((s) {
-                              final pct = total == 0
-                                  ? 0.0
-                                  : s.value / total * 100;
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 9),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 10,
-                                      height: 10,
-                                      decoration: BoxDecoration(
-                                        color: s.color,
-                                        borderRadius: BorderRadius.circular(3),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 7),
-                                    Expanded(
-                                      child: Text(
-                                        s.label,
-                                        style: TextStyle(
-                                          fontSize: 11,
-                                          color: isDark
-                                              ? const Color(0xFF94A3B8)
-                                              : const Color(0xFF64748B),
-                                        ),
-                                      ),
-                                    ),
-                                    Text(
-                                      '${pct.toStringAsFixed(0)}%',
-                                      style: TextStyle(
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w700,
-                                        color: s.color,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      '(${s.value})',
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        color: isDark
-                                            ? const Color(0xFF475569)
-                                            : const Color(0xFFCBD5E1),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  // Stacked bar as additional visual
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(6),
-                    child: SizedBox(
-                      height: 8,
-                      child: Row(
-                        children: segs.map((s) {
-                          final flex = s.value;
-                          return Expanded(
-                            flex: flex > 0 ? flex : 1,
-                            child: TweenAnimationBuilder<double>(
-                              tween: Tween(begin: 0, end: 1),
-                              duration: const Duration(milliseconds: 900),
-                              builder: (_, v, _) => FractionallySizedBox(
-                                widthFactor: v,
-                                alignment: Alignment.centerLeft,
-                                child: Container(color: s.color),
-                              ),
+                            duration: const Duration(milliseconds: 900),
+                            builder: (_, v, _) => FractionallySizedBox(
+                              widthFactor: v,
+                              alignment: Alignment.centerLeft,
+                              child: Container(color: s.color),
                             ),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  // Total badge
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 7,
-                    ),
-                    decoration: BoxDecoration(
-                      color: isDark
-                          ? const Color(0xFF0F172A)
-                          : const Color(0xFFF8FAFC),
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: isDark
-                            ? const Color(0xFF334155)
-                            : const Color(0xFFE2E8F0),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.circle,
-                          size: 7,
-                          color: Color(0xFF3B82F6),
-                        ),
-                        const SizedBox(width: 7),
-                        Text(
-                          'Total Records: $total',
-                          style: TextStyle(
-                            fontSize: 12.5,
-                            fontWeight: FontWeight.w700,
-                            color: isDark
-                                ? Colors.white
-                                : const Color(0xFF1E293B),
                           ),
-                        ),
-                      ],
+                        );
+                      }).toList(),
                     ),
                   ),
-                ],
-              ),
-      ),
+                ),
+                const SizedBox(height: 8),
+                // Total badge
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 7,
+                  ),
+                  decoration: BoxDecoration(
+                    color: isDark
+                        ? const Color(0xFF0F172A)
+                        : const Color(0xFFF8FAFC),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: isDark
+                          ? const Color(0xFF334155)
+                          : const Color(0xFFE2E8F0),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.circle,
+                        size: 7,
+                        color: Color(0xFF3B82F6),
+                      ),
+                      const SizedBox(width: 7),
+                      Text(
+                        'Total Records: $total',
+                        style: TextStyle(
+                          fontSize: 12.5,
+                          fontWeight: FontWeight.w700,
+                          color: isDark
+                              ? Colors.white
+                              : const Color(0xFF1E293B),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }
