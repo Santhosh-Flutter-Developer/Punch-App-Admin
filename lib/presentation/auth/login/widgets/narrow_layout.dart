@@ -24,13 +24,14 @@ class NarrowLayout extends StatelessWidget {
         children: [
           const SizedBox(height: 80),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Column(
               children: [
                 // Logo(),
                 const SizedBox(height: 32),
                 const Text(
-                  'Multi-Company HR Management',
+                  'Super Admin Control Panel',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 28,
@@ -51,7 +52,7 @@ class NarrowLayout extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 40),
+            padding: const EdgeInsets.fromLTRB(10, 0, 10, 40),
             child: FadeTransition(
               opacity: cardAnim,
               child: LoginCard(

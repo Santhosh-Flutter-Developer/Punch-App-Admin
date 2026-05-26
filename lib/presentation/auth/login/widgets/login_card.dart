@@ -28,9 +28,14 @@ class LoginCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final isWide = size.width > 800;
     return Container(
       constraints: const BoxConstraints(maxWidth: 420),
-      padding: const EdgeInsets.all(36.0),
+      padding: EdgeInsets.symmetric(
+        horizontal: isWide ? 36.0 : 16.0,
+        vertical: 36.0,
+      ),
       decoration: BoxDecoration(
         color: const Color(0xFF1E293B).withOpacity(0.95),
         borderRadius: BorderRadius.circular(24),

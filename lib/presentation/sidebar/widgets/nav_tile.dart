@@ -36,7 +36,7 @@ class NavTile extends StatelessWidget {
                 duration: const Duration(milliseconds: 160),
                 padding: EdgeInsets.symmetric(
                   horizontal: exp ? 12 : 15,
-                  vertical: 9,
+                  vertical: 12,
                 ),
                 decoration: BoxDecoration(
                   color: sel

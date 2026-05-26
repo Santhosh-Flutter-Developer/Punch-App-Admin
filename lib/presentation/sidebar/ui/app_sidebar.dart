@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:sri_hr_admin/presentation/auth/controller/app_controller.dart';
 import 'package:sri_hr_admin/presentation/auth/controller/auth_controller.dart';
@@ -67,29 +68,40 @@ class AppSidebar extends StatelessWidget {
     const bg = Color(0xFF0A0F1E);
     return Obx(() {
       final expanded = app.isSidebarExpanded.value;
-      return AnimatedContainer(
-        duration: const Duration(milliseconds: 220),
-        curve: Curves.easeInOut,
-        width: expanded ? 242 : 100,
-        decoration: BoxDecoration(
-          color: bg,
-          border: Border(
-            right: BorderSide(color: Colors.white.withOpacity(0.05)),
-          ),
+      return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: const SystemUiOverlayStyle(
+          statusBarColor: Color(0xFF0A0F1E),
+          statusBarIconBrightness: Brightness.light,
         ),
-        child: Column(
-          children: [
-            Header(exp: expanded, app: app, auth: auth),
-            Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                itemCount: items.length,
-                itemBuilder: (_, i) =>
-                    NavTile(item: items[i], app: app, exp: expanded),
+        child: SafeArea(
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 220),
+            curve: Curves.easeInOut,
+            width: expanded ? 242 : 100,
+            decoration: BoxDecoration(
+              color: bg,
+              border: Border(
+                right: BorderSide(color: Colors.white.withOpacity(0.05)),
               ),
             ),
-            Footer(exp: expanded, app: app, auth: auth),
-          ],
+            child: Column(
+              children: [
+                Header(exp: expanded, app: app, auth: auth),
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 6,
+                    ),
+                    itemCount: items.length,
+                    itemBuilder: (_, i) =>
+                        NavTile(item: items[i], app: app, exp: expanded),
+                  ),
+                ),
+                Footer(exp: expanded, app: app, auth: auth),
+              ],
+            ),
+          ),
         ),
       );
     });

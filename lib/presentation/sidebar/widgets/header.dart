@@ -16,6 +16,8 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final isWide = size.width > 800;
     return Container(
       height: 66,
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -78,23 +80,51 @@ class Header extends StatelessWidget {
               ),
             ),
           ],
-          // Collapse toggle
-          GestureDetector(
-            onTap: app.toggleSidebar,
-            child: Container(
-              width: 28,
-              height: 28,
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.04),
-                borderRadius: BorderRadius.circular(7),
-              ),
-              child: Icon(
-                exp ? Icons.chevron_left_rounded : Icons.chevron_right_rounded,
-                color: Colors.white24,
-                size: 18,
+          if (!isWide)
+            // Theme
+            Obx(
+              () => Tooltip(
+                message: app.isDarkMode.value ? 'Light Mode' : 'Dark Mode',
+                child: GestureDetector(
+                  onTap: app.toggleTheme,
+                  child: Container(
+                    width: 34,
+                    height: 34,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.04),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(
+                      app.isDarkMode.value
+                          ? Icons.light_mode_rounded
+                          : Icons.dark_mode_rounded,
+                      color: Colors.white30,
+                      size: 16,
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
+          if (isWide)
+            // Collapse toggle
+            GestureDetector(
+              onTap: app.toggleSidebar,
+              child: Container(
+                width: 28,
+                height: 28,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.04),
+                  borderRadius: BorderRadius.circular(7),
+                ),
+                child: Icon(
+                  exp
+                      ? Icons.chevron_left_rounded
+                      : Icons.chevron_right_rounded,
+                  color: Colors.white24,
+                  size: 18,
+                ),
+              ),
+            ),
         ],
       ),
     );

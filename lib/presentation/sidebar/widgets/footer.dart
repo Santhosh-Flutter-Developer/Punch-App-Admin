@@ -18,6 +18,8 @@ class Footer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final isWide = size.width > 800;
     return Container(
       padding: const EdgeInsets.all(10.0),
       decoration: const BoxDecoration(
@@ -67,6 +69,29 @@ class Footer extends StatelessWidget {
                         ],
                       ),
                     ),
+                    if (!isWide)
+                      Tooltip(
+                        message: 'Logout',
+                        child: GestureDetector(
+                          onTap: () => confirmLogout(auth),
+                          child: Container(
+                            width: 34,
+                            height: 34,
+                            decoration: BoxDecoration(
+                              color: AppTheme.errorColor.withOpacity(0.08),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: AppTheme.errorColor.withOpacity(0.2),
+                              ),
+                            ),
+                            child: const Icon(
+                              Icons.logout_rounded,
+                              color: AppTheme.errorColor,
+                              size: 16,
+                            ),
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ),
@@ -74,30 +99,31 @@ class Footer extends StatelessWidget {
           // Bottom row: theme toggle + logout
           Row(
             children: [
-              // Theme
-              Obx(
-                () => Tooltip(
-                  message: app.isDarkMode.value ? 'Light Mode' : 'Dark Mode',
-                  child: GestureDetector(
-                    onTap: app.toggleTheme,
-                    child: Container(
-                      width: 34,
-                      height: 34,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.04),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Icon(
-                        app.isDarkMode.value
-                            ? Icons.light_mode_rounded
-                            : Icons.dark_mode_rounded,
-                        color: Colors.white30,
-                        size: 16,
+              if (isWide)
+                // Theme
+                Obx(
+                  () => Tooltip(
+                    message: app.isDarkMode.value ? 'Light Mode' : 'Dark Mode',
+                    child: GestureDetector(
+                      onTap: app.toggleTheme,
+                      child: Container(
+                        width: 34,
+                        height: 34,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.04),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(
+                          app.isDarkMode.value
+                              ? Icons.light_mode_rounded
+                              : Icons.dark_mode_rounded,
+                          color: Colors.white30,
+                          size: 16,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
               if (exp) const Spacer(),
               const SizedBox(width: 6),
               if (!exp)
@@ -124,7 +150,7 @@ class Footer extends StatelessWidget {
                     ),
                   ),
                 ),
-              if (exp) ...[
+              if (exp && isWide) ...[
                 const SizedBox(width: 6),
                 Expanded(
                   child: GestureDetector(
