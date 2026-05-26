@@ -137,28 +137,34 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final isWide = size.width > 800;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return MainLayout(
       title: 'Dashboard',
       actions: [
-        // Refresh
-        TextButton.icon(
-          onPressed: load,
-          icon: const Icon(Icons.refresh_rounded, size: 15),
-          label: const Text('Refresh', style: TextStyle(fontSize: 13)),
-        ),
+        isWide
+            ?
+              // Refresh
+              TextButton.icon(
+                onPressed: load,
+                icon: const Icon(Icons.refresh_rounded, size: 15),
+                label: const Text('Refresh', style: TextStyle(fontSize: 13)),
+              )
+            : IconButton(onPressed: load, icon: Icon(Icons.refresh_rounded)),
       ],
       child: error != null
           ? controller.buildError(onpressed: load, error: error)
           : FadeTransition(
               opacity: loading ? const AlwaysStoppedAnimation(1) : fadeAnim,
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20.0),
+                padding: EdgeInsets.all(isWide ? 20.0 : 10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     controller.heroBanner(
                       isDark,
+                      isWide,
                       counts: _counts,
                       pulseCtrl: pulseCtrl,
                     ),

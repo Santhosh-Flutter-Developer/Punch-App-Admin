@@ -47,21 +47,21 @@ class MainLayout extends StatelessWidget {
         ),
         actions: [
           ...?actions,
-          Obx(
-            () => IconButton(
-              icon: Icon(
-                app.isDarkMode.value
-                    ? Icons.light_mode_rounded
-                    : Icons.dark_mode_rounded,
-              ),
-              onPressed: app.toggleTheme,
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.logout_rounded, color: AppTheme.errorColor),
-            onPressed: () => auth.logout(),
-            tooltip: 'Logout',
-          ),
+          // Obx(
+          //   () => IconButton(
+          //     icon: Icon(
+          //       app.isDarkMode.value
+          //           ? Icons.light_mode_rounded
+          //           : Icons.dark_mode_rounded,
+          //     ),
+          //     onPressed: app.toggleTheme,
+          //   ),
+          // ),
+          // IconButton(
+          //   icon: const Icon(Icons.logout_rounded, color: AppTheme.errorColor),
+          //   onPressed: () => auth.logout(),
+          //   tooltip: 'Logout',
+          // ),
         ],
       ),
       drawer: const Drawer(child: AppSidebar()),

@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:responsive_grid/responsive_grid.dart';
 import 'package:sri_hr_admin/core/theme/app_theme.dart';
 import 'package:sri_hr_admin/presentation/auth/controller/app_controller.dart';
 import 'package:sri_hr_admin/presentation/dashboard/models/act.dart';
@@ -52,12 +53,13 @@ class DashboardController extends GetxController {
   }
 
   Widget heroBanner(
-    bool isDark, {
+    bool isDark,
+    bool isWide, {
     required AnimationController pulseCtrl,
     required Map<String, int> counts,
   }) {
     return Container(
-      height: 180.0,
+      // height: 180.0,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         gradient: const LinearGradient(
@@ -90,7 +92,7 @@ class DashboardController extends GetxController {
             ),
           ),
           Positioned(
-            left: 180,
+            left: isWide ? 180 : 100,
             top: 20,
             child: Container(
               width: 80,
@@ -106,120 +108,141 @@ class DashboardController extends GetxController {
             painter: DotGridPainter(),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(28, 22, 24, 22),
-            child: Row(
+            padding: EdgeInsets.fromLTRB(
+              isWide ? 28 : 10,
+              isWide ? 22 : 18,
+              isWide ? 24 : 10,
+              isWide ? 22 : 18,
+            ),
+            child: Column(
               children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // Badge
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF3B82F6).withOpacity(0.18),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: const Color(0xFF3B82F6).withOpacity(0.35),
-                          ),
-                        ),
-                        child: const Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.verified_rounded,
-                              color: Color(0xFF60A5FA),
-                              size: 11,
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Badge
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 4,
                             ),
-                            SizedBox(width: 5),
-                            Text(
-                              'SUPER ADMIN',
-                              style: TextStyle(
-                                color: Color(0xFF60A5FA),
-                                fontSize: 10,
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: 1.1,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF3B82F6).withOpacity(0.18),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: const Color(
+                                  0xFF3B82F6,
+                                ).withOpacity(0.35),
                               ),
                             ),
+                            child: const Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.verified_rounded,
+                                  color: Color(0xFF60A5FA),
+                                  size: 11,
+                                ),
+                                SizedBox(width: 5),
+                                Text(
+                                  'SUPER ADMIN',
+                                  style: TextStyle(
+                                    color: Color(0xFF60A5FA),
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w800,
+                                    letterSpacing: 1.1,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          //Title
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Sri HR Admin',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: -0.5,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                'Complete HR operations control panel',
+                                style: TextStyle(
+                                  color: Colors.white.withOpacity(0.45),
+                                  fontSize: 12.5,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Icon
+                    Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          colors: [
+                            const Color(0xFF3B82F6).withOpacity(0.2),
+                            const Color(0xFF06B6D4).withOpacity(0.2),
                           ],
                         ),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.12),
+                          width: 1.5,
+                        ),
                       ),
-                      //Title
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Sri HR Admin',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w900,
-                              letterSpacing: -0.5,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            'Complete HR operations control panel',
-                            style: TextStyle(
-                              color: Colors.white.withOpacity(0.45),
-                              fontSize: 12.5,
-                            ),
-                          ),
-                        ],
+                      child: const Icon(
+                        Icons.admin_panel_settings_rounded,
+                        color: Colors.white,
+                        size: 38,
                       ),
-                      // Pills
-                      Row(
-                        children: [
-                          HeroPill(
-                            n: '${counts['companies'] ?? 0}',
-                            label: 'Companies',
-                            icon: Icons.business_rounded,
-                            color: Color(0xFF3B82F6),
-                          ),
-                          const SizedBox(width: 8),
-                          HeroPill(
-                            n: '${counts['employees'] ?? 0}',
-                            label: 'Employees',
-                            icon: Icons.people_rounded,
-                            color: Color(0xFF10B981),
-                          ),
-                          const SizedBox(width: 8),
-                          HeroPill(
-                            n: '${counts['subscriptions'] ?? 0}',
-                            label: "Subs",
-                            icon: Icons.workspace_premium_rounded,
-                            color: Color(0xFF8B5CF6),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                // Icon
-                Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      colors: [
-                        const Color(0xFF3B82F6).withOpacity(0.2),
-                        const Color(0xFF06B6D4).withOpacity(0.2),
+                SizedBox(height: 4),
+                // Pills
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.only(top: 6.0),
+
+                    child: Row(
+                      children: [
+                        HeroPill(
+                          n: '${counts['companies'] ?? 0}',
+                          label: 'Companies',
+                          icon: Icons.business_rounded,
+                          color: Color(0xFF3B82F6),
+                        ),
+                        const SizedBox(width: 8),
+                        HeroPill(
+                          n: '${counts['employees'] ?? 0}',
+                          label: 'Employees',
+                          icon: Icons.people_rounded,
+                          color: Color(0xFF10B981),
+                        ),
+                        const SizedBox(width: 8),
+                        HeroPill(
+                          n: '${counts['subscriptions'] ?? 0}',
+                          label: "Subs",
+                          icon: Icons.workspace_premium_rounded,
+                          color: Color(0xFF8B5CF6),
+                        ),
                       ],
                     ),
-                    border: Border.all(
-                      color: Colors.white.withOpacity(0.12),
-                      width: 1.5,
-                    ),
-                  ),
-                  child: const Icon(
-                    Icons.admin_panel_settings_rounded,
-                    color: Colors.white,
-                    size: 38,
                   ),
                 ),
               ],
@@ -271,7 +294,147 @@ class DashboardController extends GetxController {
         'active',
       ),
     ];
-    return LayoutBuilder(
+    return ResponsiveGridRow(
+      children: List.generate(kpis.length, (i) {
+        final k = kpis[i];
+        return ResponsiveGridCol(
+          xl: 3,
+          lg: 3,
+          sm: 6,
+          md: 3,
+          xs: 6,
+          child: Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: TweenAnimationBuilder<double>(
+              tween: Tween(begin: 0, end: 1),
+              duration: Duration(milliseconds: 350 + i * 80),
+              builder: (_, v, child) {
+                return Transform.translate(
+                  offset: Offset(0, 16 * (1 - v)),
+                  child: Opacity(opacity: v, child: child),
+                );
+              },
+              child: InkWell(
+                onTap: () {
+                  // Navigate to related screen
+                  final routes = [
+                    AppRoutes.employees,
+                    AppRoutes.companies,
+                    AppRoutes.leaveRequests,
+                    AppRoutes.subscriptions,
+                  ];
+                  Get.find<AppController>().currentRoute.value = routes[i];
+                  Get.toNamed(routes[i]);
+                },
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  padding: const EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                    color: isDark ? const Color(0xFF1E293B) : Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: isDark
+                          ? const Color(0xFF334155)
+                          : const Color(0xFFE2E8F0),
+                    ),
+                    boxShadow: isDark
+                        ? []
+                        : [
+                            BoxShadow(
+                              color: k.color.withOpacity(0.07),
+                              blurRadius: 16,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: 42,
+                            height: 42,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [k.color, k.darkColor],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Icon(k.icon, color: Colors.white, size: 20),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: k.color.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              k.change,
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: k.color,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 12.0),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          loading
+                              ? ShimmerWidget(
+                                  isDark: isDark,
+                                  w: 44,
+                                  h: 26,
+                                  pulseCtrl: pulseCtrl,
+                                )
+                              : TweenAnimationBuilder<int>(
+                                  tween: IntTween(begin: 0, end: k.value),
+                                  duration: const Duration(milliseconds: 1000),
+                                  curve: Curves.easeOut,
+                                  builder: (_, v, _) => Text(
+                                    '$v',
+                                    style: TextStyle(
+                                      fontSize: 26,
+                                      fontWeight: FontWeight.w800,
+                                      color: k.color,
+                                      height: 1,
+                                    ),
+                                  ),
+                                ),
+
+                          const SizedBox(height: 3),
+                          Text(
+                            k.label,
+                            style: TextStyle(
+                              fontSize: 11.5,
+                              color: isDark
+                                  ? const Color(0xFF94A3B8)
+                                  : const Color(0xFF64748B),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      }),
+    );
+    /*LayoutBuilder(
       builder: (_, box) {
         int cols = box.maxWidth > 800
             ? 4
@@ -417,7 +580,7 @@ class DashboardController extends GetxController {
           },
         );
       },
-    );
+    );*/
   }
 
   Widget recentActivitySection(
