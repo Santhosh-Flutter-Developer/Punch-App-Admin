@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sri_hr_admin/core/theme/app_theme.dart';
 import 'package:sri_hr_admin/presentation/auth/controller/app_controller.dart';
 import 'package:sri_hr_admin/presentation/auth/controller/auth_controller.dart';
 import 'package:sri_hr_admin/presentation/sidebar/ui/app_sidebar.dart';
