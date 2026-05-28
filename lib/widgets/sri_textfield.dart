@@ -4,6 +4,12 @@ import 'package:sri_hr_admin/core/theme/app_theme.dart';
 class SriTextField extends StatelessWidget {
   final TextEditingController? controller;
   final String? label;
+  final Color? labelColor;
+  final Color? borderColor;
+  final Color? iconColor;
+  final Color? hintColor;
+  final Color? fillColor;
+  final Color? textColor;
   final String? hint;
   final IconData? prefixIcon;
   final bool obscureText;
@@ -21,6 +27,12 @@ class SriTextField extends StatelessWidget {
     super.key,
     this.controller,
     this.label,
+    this.labelColor,
+    this.borderColor,
+    this.hintColor,
+    this.iconColor,
+    this.fillColor,
+    this.textColor,
     this.hint,
     this.prefixIcon,
     this.obscureText = false,
@@ -44,7 +56,7 @@ class SriTextField extends StatelessWidget {
           Text(
             label ?? '',
             style: TextStyle(
-              color: Colors.white.withOpacity(0.65),
+              color: labelColor ?? Colors.white.withOpacity(0.65),
               fontSize: 12.5,
               fontWeight: FontWeight.w600,
               letterSpacing: 0.3,
@@ -55,7 +67,7 @@ class SriTextField extends StatelessWidget {
           controller: controller,
           obscureText: obscureText,
           keyboardType: keyboardType,
-          style: const TextStyle(color: Colors.white, fontSize: 14),
+          style: TextStyle(color: textColor ?? Colors.white, fontSize: 14),
           maxLines: maxLines,
           readOnly: readOnly,
           onTap: onTap,
@@ -67,11 +79,15 @@ class SriTextField extends StatelessWidget {
             filled: true,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.white.withOpacity(0.1)),
+              borderSide: BorderSide(
+                color: borderColor ?? Colors.white.withOpacity(0.1),
+              ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.white.withOpacity(0.1)),
+              borderSide: BorderSide(
+                color: borderColor ?? Colors.white.withOpacity(0.1),
+              ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
@@ -88,18 +104,22 @@ class SriTextField extends StatelessWidget {
               horizontal: 16,
               vertical: 14,
             ),
-            fillColor: Colors.white.withOpacity(0.05),
+            fillColor: fillColor ?? Colors.white.withOpacity(0.05),
             hintStyle: TextStyle(
-              color: Colors.white.withOpacity(0.25),
+              color: hintColor ?? Colors.white.withOpacity(0.25),
               fontSize: 13,
             ),
             prefixIcon: prefixIcon != null
-                ? Icon(prefixIcon, size: 18, color: Colors.white38)
+                ? Icon(prefixIcon, size: 18, color: iconColor ?? Colors.white38)
                 : null,
             suffixIcon: suffixIcon != null
                 ? GestureDetector(
                     onTap: onSuffixTap,
-                    child: Icon(suffixIcon, size: 20, color: Colors.white38),
+                    child: Icon(
+                      suffixIcon,
+                      size: 20,
+                      color: iconColor ?? Colors.white38,
+                    ),
                   )
                 : null,
           ),

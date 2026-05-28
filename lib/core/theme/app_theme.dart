@@ -12,8 +12,13 @@ class AppTheme {
   static const Color sidebarLight = Color(0xFF1E293B);
   static const Color surfaceVariant = Color(0xFFF3F4F6);
   static const Color textTertiary = Color(0xFF9CA3AF);
+  static const Color textSecondary = Color(0xFF6B7280);
   static const Color border = Color(0xFFE8EAED);
   static const Color surface = Color(0xFFFFFFFF);
+  static const Color secondary = Color(0xFF00D4AA);
+  static const Color textPrimary = Color(0xFF0F172A);
+  static const Color success = Color(0xFF22C55E);
+  static const Color textMuted = Color(0xFF94A3B8);
 
   // Gradients
   static const LinearGradient primaryGradient = LinearGradient(

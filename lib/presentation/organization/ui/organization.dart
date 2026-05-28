@@ -57,7 +57,12 @@ class Organization extends StatelessWidget {
               return RefreshIndicator(
                 onRefresh: controller.fetchOrganizations,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
+                  padding: EdgeInsets.fromLTRB(
+                    isWide ? 20 : 10,
+                    16,
+                    isWide ? 20 : 10,
+                    12,
+                  ),
                   child: ResponsiveGridRow(
                     children: List.generate(controller.filteredOrgs.length, (
                       i,

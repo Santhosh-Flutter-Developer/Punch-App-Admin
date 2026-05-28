@@ -24,7 +24,6 @@ class OrganizationController extends GetxController {
     debounce(searchQuery, (_) {
       applyFilter();
     }, time: const Duration(milliseconds: 300));
-    
   }
 
   Future<void> fetchOrganizations() async {
@@ -61,14 +60,6 @@ class OrganizationController extends GetxController {
   void onSearch(String val) {
     searchQuery.value = val;
   }
-
-  
-
-  
-
-  
-
-  
 
   Widget buildShimmer() {
     return ResponsiveGridRow(
@@ -153,6 +144,8 @@ class OrganizationController extends GetxController {
     required Map<String, dynamic> org,
     required int index,
   }) {
+    final size = MediaQuery.of(context).size;
+    final isWide = size.width > 800;
     final createdAt = org['created_at'] != null
         ? DateFormat('MMM d, yyyy').format(DateTime.parse(org['created_at']))
         : '';
@@ -169,7 +162,7 @@ class OrganizationController extends GetxController {
     ];
     final gradient = gradients[index % gradients.length];
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0, right: 12.0),
+      padding: EdgeInsets.only(bottom: 12.0, right: isWide ? 12.0 : 0.0),
       child: Container(
         decoration: BoxDecoration(
           color: isDark ? const Color(0xFF1E293B) : AppTheme.surface,
@@ -234,7 +227,7 @@ class OrganizationController extends GetxController {
                           style: const TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 16,
-                            color: AppTheme.textTertiary,
+                            color: AppTheme.textPrimary,
                           ),
                         ),
                         const SizedBox(height: 6),
@@ -278,7 +271,6 @@ class OrganizationController extends GetxController {
                       ],
                     ),
                   ),
-                  
                 ],
               ),
             ),

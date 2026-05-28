@@ -42,17 +42,14 @@ class EmptyState extends StatelessWidget {
             child: Text(
               message,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w800,
-              ),
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w800),
             ),
           ),
           const SizedBox(height: 8.0),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: const Text(
-              'You haven’t created any entries. Add a new record to begin managing your data.',
+              'You haven’t created any entries.',
               textAlign: TextAlign.center,
               style: TextStyle(color: AppTheme.textTertiary),
             ),
@@ -63,7 +60,7 @@ class EmptyState extends StatelessWidget {
               onPressed: onAction,
               icon: Icons.add,
               label: actionLabel!,
-              color:color?? AppTheme.primaryColor,
+              color: color ?? AppTheme.primaryColor,
             ),
           ],
         ],

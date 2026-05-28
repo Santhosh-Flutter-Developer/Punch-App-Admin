@@ -1,0 +1,122 @@
+import 'package:flutter/material.dart';
+import 'package:sri_hr_admin/core/theme/app_theme.dart';
+
+class BranchTile extends StatelessWidget {
+  final Map<String, dynamic> company;
+  final bool isActive;
+  final VoidCallback onTap;
+  const BranchTile({
+    super.key,
+    required this.company,
+    required this.isActive,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      top: false,
+      child: InkWell(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          color: isActive
+              ? AppTheme.primaryColor.withOpacity(0.06)
+              : Colors.transparent,
+          padding: const EdgeInsets.all(14.0),
+          child: Row(
+            children: [
+              Container(
+                width: 44.0,
+                height: 44.0,
+                decoration: BoxDecoration(
+                  color: isActive
+                      ? AppTheme.primaryColor.withOpacity(0.15)
+                      : AppTheme.primaryColor.withOpacity(0.07),
+                  borderRadius: BorderRadius.circular(12.0),
+                  border: isActive
+                      ? Border.all(
+                          color: AppTheme.primaryColor.withOpacity(0.4),
+                          width: 2.0,
+                        )
+                      : null,
+                ),
+                child:
+                    company['logo_url'] != null &&
+                        company["logo_url"]!.isNotEmpty
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(12.0),
+                        child: Image.network(
+                          company["logo_url"]!,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, _, _) => initials(company),
+                        ),
+                      )
+                    : initials(company),
+              ),
+              const SizedBox(width: 12.0),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            company["name"] ?? '',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 13.0,
+                              color: isActive
+                                  ? AppTheme.primaryColor
+                                  : AppTheme.textPrimary,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        if (isActive)
+                          Container(
+                            width: 8.0,
+                            height: 8.0,
+                            decoration: BoxDecoration(
+                              color: AppTheme.success,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 3.0),
+                    Text(
+                      [
+                        if (company["city"]?.isNotEmpty == true)
+                          company["city"]!,
+                        if (company["state"]?.isNotEmpty == true)
+                          company["state"]!,
+                      ].join(', '),
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: AppTheme.textMuted,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget initials(Map<String, dynamic> c) => Center(
+    child: Text(
+      c["name"].substring(0, c["name"].length > 1 ? 2 : 1).toUpperCase(),
+      style: const TextStyle(
+        color: AppTheme.primaryColor,
+        fontWeight: FontWeight.w800,
+        fontSize: 16,
+      ),
+    ),
+  );
+}
