@@ -135,10 +135,7 @@ class CompanyController extends GetxController {
   }
 
   Widget companyBody(BuildContext context) {
-    final isWide = MediaQuery.of(context).size.width >= 800;
-    return isWide
-        ? Expanded(child: branchList())
-        : SizedBox(child: branchList());
+    return branchList();
   }
 
   Widget branchList() {
