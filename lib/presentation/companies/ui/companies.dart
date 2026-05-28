@@ -26,70 +26,107 @@ class Companies extends StatelessWidget {
             ?
               // Refresh
               TextButton.icon(
-                onPressed: () {},
+                onPressed:controller.fetchAll,
                 icon: const Icon(Icons.refresh_rounded, size: 15),
                 label: const Text('Refresh', style: TextStyle(fontSize: 13)),
               )
-            : IconButton(onPressed: () {}, icon: Icon(Icons.refresh_rounded)),
+            : IconButton(onPressed: controller.fetchAll, icon: Icon(Icons.refresh_rounded)),
       ],
+      child: isWide
+          ? wideUI(isDark, context: context, isWide: isWide)
+          : narrowUI(isDark, context: context, isWide: isWide),
+    );
+  }
+
+  Widget branchList(
+    bool isDark, {
+    required BuildContext context,
+    required bool isWide,
+  }) {
+    return SizedBox(
+      height: 500,
+      width: 400,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          controller.buildToolbar(isDark),
           Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 500,
-                  width: 400,
-                  child: Column(
-                    children: [
-                      controller.buildToolbar(isDark),
-                      Expanded(
-                        child: Obx(() {
-                          if (controller.isLoading.value) {
-                            return ShimmerList();
-                          }
-                          if (controller.filteredCompanies.isEmpty) {
-                            return EmptyState(
-                              message: 'No Companies added yet',
-                              icon: Icons.apartment_rounded,
-                              color: AppTheme.primaryLight,
-                            );
-                          }
-                          return RefreshIndicator(
-                            onRefresh: controller.fetchAll,
-                            color: AppTheme.secondary,
-                            child: controller.companyBody(context),
-                          );
-                        }),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  width: 1,
-                  height: double.infinity,
-                  color: AppTheme.border,
-                ),
-                Expanded(
-                  child: Obx(() {
-                    return controller.filteredCompanies.isEmpty
-                        ? SizedBox()
-                        : CompanyDetails(
-                            key: ValueKey(controller.filteredCompanies[controller.selectedIndex.value]['id']),
-                            company: controller.filteredCompanies[controller.selectedIndex.value],
-                            controller: controller,
-                          );
-                  }),
-                ),
-              ],
-            ),
+            child: Obx(() {
+              if (controller.isLoading.value) {
+                return ShimmerList();
+              }
+              if (controller.filteredCompanies.isEmpty) {
+                return EmptyState(
+                  message: 'No Companies added yet',
+                  icon: Icons.apartment_rounded,
+                  color: AppTheme.primaryLight,
+                );
+              }
+              return RefreshIndicator(
+                onRefresh: controller.fetchAll,
+                color: AppTheme.secondary,
+                child: controller.companyBody(context),
+              );
+            }),
           ),
         ],
       ),
     );
+  }
+
+  Widget wideUI(
+    bool isDark, {
+    required BuildContext context,
+    required bool isWide,
+  }) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              branchList(isDark, context: context, isWide: isWide),
+              Container(
+                width: 1,
+                height: double.infinity,
+                color: AppTheme.border,
+              ),
+              Expanded(child: companyDetails()),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget companyDetails() {
+    return Obx(() {
+      return controller.filteredCompanies.isEmpty
+          ? SizedBox()
+          : CompanyDetails(
+              key: ValueKey(
+                controller.filteredCompanies[controller
+                    .selectedIndex
+                    .value]['id'],
+              ),
+              company:
+                  controller.filteredCompanies[controller.selectedIndex.value],
+              controller: controller,
+            );
+    });
+  }
+
+  Widget narrowUI(
+    bool isDark, {
+    required BuildContext context,
+    required bool isWide,
+  }) {
+    return Obx(() {
+      return controller.enable.value
+          ? companyDetails()
+          : branchList(isDark, context: context, isWide: isWide);
+    });
   }
 }

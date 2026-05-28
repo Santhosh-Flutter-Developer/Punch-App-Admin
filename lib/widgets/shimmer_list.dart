@@ -7,26 +7,28 @@ class ShimmerList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveGridRow(
-      children: List.generate(5, (i) {
-        return ResponsiveGridCol(
-          xl: 4,
-          lg: 4,
-          md: 4,
-          xs: 12,
-          sm: 12,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: Container(
-              height: 90,
-              decoration: BoxDecoration(
-                color: AppTheme.surfaceVariant,
-                borderRadius: BorderRadius.circular(18),
+    return SingleChildScrollView(
+      child: ResponsiveGridRow(
+        children: List.generate(5, (i) {
+          return ResponsiveGridCol(
+            xl: 4,
+            lg: 4,
+            md: 4,
+            xs: 12,
+            sm: 12,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Container(
+                height: 90,
+                decoration: BoxDecoration(
+                  color: AppTheme.surface,
+                  borderRadius: BorderRadius.circular(18),
+                ),
               ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 }

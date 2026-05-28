@@ -14,14 +14,18 @@ class BranchTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final isWide = size.width > 800;
     return SafeArea(
       top: false,
       child: InkWell(
         onTap: onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          color: isActive
-              ? AppTheme.primaryColor.withOpacity(0.06)
+          color: isWide
+              ? isActive
+                    ? AppTheme.primaryColor.withOpacity(0.06)
+                    : Colors.transparent
               : Colors.transparent,
           padding: const EdgeInsets.all(14.0),
           child: Row(
@@ -30,15 +34,19 @@ class BranchTile extends StatelessWidget {
                 width: 44.0,
                 height: 44.0,
                 decoration: BoxDecoration(
-                  color: isActive
-                      ? AppTheme.primaryColor.withOpacity(0.15)
+                  color: isWide
+                      ? isActive
+                            ? AppTheme.primaryColor.withOpacity(0.15)
+                            : AppTheme.primaryColor.withOpacity(0.07)
                       : AppTheme.primaryColor.withOpacity(0.07),
                   borderRadius: BorderRadius.circular(12.0),
-                  border: isActive
-                      ? Border.all(
-                          color: AppTheme.primaryColor.withOpacity(0.4),
-                          width: 2.0,
-                        )
+                  border: isWide
+                      ? isActive
+                            ? Border.all(
+                                color: AppTheme.primaryColor.withOpacity(0.4),
+                                width: 2.0,
+                              )
+                            : null
                       : null,
                 ),
                 child:
@@ -67,14 +75,16 @@ class BranchTile extends StatelessWidget {
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 13.0,
-                              color: isActive
-                                  ? AppTheme.primaryColor
+                              color: isWide
+                                  ? isActive
+                                        ? AppTheme.primaryColor
+                                        : AppTheme.textPrimary
                                   : AppTheme.textPrimary,
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        if (isActive)
+                        if (isActive && isWide)
                           Container(
                             width: 8.0,
                             height: 8.0,

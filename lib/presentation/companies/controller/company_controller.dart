@@ -9,6 +9,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class CompanyController extends GetxController {
   final supabase = Supabase.instance.client;
   final isLoading = true.obs;
+  final TextEditingController searchController=TextEditingController();
   final companies = <Map<String, dynamic>>[].obs;
   final filteredCompanies = <Map<String, dynamic>>[].obs;
   final organizations = <Map<String, dynamic>>[].obs;
@@ -96,6 +97,7 @@ class CompanyController extends GetxController {
           SearchField(
             onSearch: onSearch,
             hintText: "Search companies",
+            controller: searchController,
             isDark: isDark,
           ),
           const SizedBox(height: 12),
@@ -151,6 +153,7 @@ class CompanyController extends GetxController {
                   isActive: selectedIndex.value == i,
                   onTap: () {
                     selected.value = true;
+                    enable.value = true;
                     selectedIndex.value = i;
                     selectedIndex.refresh();
                     selected.value = false;
