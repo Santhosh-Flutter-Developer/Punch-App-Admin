@@ -64,6 +64,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
   @override
   Widget build(BuildContext context) {
     final isWide = MediaQuery.of(context).size.width >= 800;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return SafeArea(
       top: false,
       child: SingleChildScrollView(
@@ -105,11 +106,19 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                           child: SriTextField(
                             controller: name,
                             label: 'Company Name *',
-                            labelColor: AppTheme.textPrimary,
-                            borderColor: AppTheme.border,
+                            labelColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            borderColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.border,
                             iconColor: AppTheme.textMuted,
-                            textColor: AppTheme.textPrimary,
-                            fillColor: AppTheme.surfaceVariant,
+                            textColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            fillColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.surfaceVariant,
                             readOnly: !editing,
                             prefixIcon: Icons.business_rounded,
                             validator: (v) =>
@@ -131,11 +140,19 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                           child: SriTextField(
                             controller: branchCode,
                             label: 'Branch Code',
-                            labelColor: AppTheme.textPrimary,
-                            borderColor: AppTheme.border,
+                            labelColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            borderColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.border,
                             iconColor: AppTheme.textMuted,
-                            textColor: AppTheme.textPrimary,
-                            fillColor: AppTheme.surfaceVariant,
+                            textColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            fillColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.surfaceVariant,
                             readOnly: !editing,
                             prefixIcon: Icons.tag_rounded,
                           ),
@@ -156,11 +173,19 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                             controller: phone,
                             label: 'Phone',
                             readOnly: !editing,
-                            labelColor: AppTheme.textPrimary,
-                            borderColor: AppTheme.border,
+                            labelColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            borderColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.border,
                             iconColor: AppTheme.textMuted,
-                            textColor: AppTheme.textPrimary,
-                            fillColor: AppTheme.surfaceVariant,
+                            textColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            fillColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.surfaceVariant,
                             keyboardType: TextInputType.phone,
                             prefixIcon: Icons.phone_rounded,
                           ),
@@ -181,11 +206,19 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                             controller: email,
                             label: 'Email',
                             readOnly: !editing,
-                            labelColor: AppTheme.textPrimary,
-                            borderColor: AppTheme.border,
+                            labelColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            borderColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.border,
                             iconColor: AppTheme.textMuted,
-                            textColor: AppTheme.textPrimary,
-                            fillColor: AppTheme.surfaceVariant,
+                            textColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            fillColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.surfaceVariant,
                             keyboardType: TextInputType.emailAddress,
                             prefixIcon: Icons.email_outlined,
                           ),
@@ -205,11 +238,19 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                           child: SriTextField(
                             controller: gstin,
                             label: 'GSTIN',
-                            labelColor: AppTheme.textPrimary,
-                            borderColor: AppTheme.border,
+                            labelColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            borderColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.border,
                             iconColor: AppTheme.textMuted,
-                            textColor: AppTheme.textPrimary,
-                            fillColor: AppTheme.surfaceVariant,
+                            textColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            fillColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.surfaceVariant,
                             readOnly: !editing,
                             prefixIcon: Icons.numbers_rounded,
                           ),
@@ -239,11 +280,19 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                             controller: address,
                             label: 'Full Address',
                             readOnly: !editing,
-                            labelColor: AppTheme.textPrimary,
-                            borderColor: AppTheme.border,
+                            labelColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            borderColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.border,
                             iconColor: AppTheme.textMuted,
-                            textColor: AppTheme.textPrimary,
-                            fillColor: AppTheme.surfaceVariant,
+                            textColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            fillColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.surfaceVariant,
                             maxLines: 2,
                             prefixIcon: Icons.home_rounded,
                           ),
@@ -263,11 +312,19 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                           child: SriTextField(
                             controller: country,
                             label: 'Country',
-                            labelColor: AppTheme.textPrimary,
-                            borderColor: AppTheme.border,
+                            labelColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            borderColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.border,
                             iconColor: AppTheme.textMuted,
-                            textColor: AppTheme.textPrimary,
-                            fillColor: AppTheme.surfaceVariant,
+                            textColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            fillColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.surfaceVariant,
                             readOnly: !editing,
                             prefixIcon: Icons.flag_rounded,
                           ),
@@ -287,11 +344,19 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                           child: SriTextField(
                             controller: state,
                             label: 'State',
-                            labelColor: AppTheme.textPrimary,
-                            borderColor: AppTheme.border,
+                            labelColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            borderColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.border,
                             iconColor: AppTheme.textMuted,
-                            textColor: AppTheme.textPrimary,
-                            fillColor: AppTheme.surfaceVariant,
+                            textColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            fillColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.surfaceVariant,
                             readOnly: !editing,
                             prefixIcon: Icons.map_rounded,
                           ),
@@ -311,11 +376,19 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                           child: SriTextField(
                             controller: city,
                             label: 'City',
-                            labelColor: AppTheme.textPrimary,
-                            borderColor: AppTheme.border,
+                            labelColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            borderColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.border,
                             iconColor: AppTheme.textMuted,
-                            textColor: AppTheme.textPrimary,
-                            fillColor: AppTheme.surfaceVariant,
+                            textColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            fillColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.surfaceVariant,
                             readOnly: !editing,
                             prefixIcon: Icons.location_city_rounded,
                           ),
@@ -335,11 +408,19 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                           child: SriTextField(
                             controller: pincode,
                             label: 'Pincode',
-                            labelColor: AppTheme.textPrimary,
-                            borderColor: AppTheme.border,
+                            labelColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            borderColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.border,
                             iconColor: AppTheme.textMuted,
-                            textColor: AppTheme.textPrimary,
-                            fillColor: AppTheme.surfaceVariant,
+                            textColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            fillColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.surfaceVariant,
                             readOnly: !editing,
                             keyboardType: TextInputType.number,
                             prefixIcon: Icons.pin_drop_rounded,
@@ -373,11 +454,19 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                             controller: lat,
                             label: 'Latitude',
                             readOnly: !editing,
-                            labelColor: AppTheme.textPrimary,
-                            borderColor: AppTheme.border,
+                            labelColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            borderColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.border,
                             iconColor: AppTheme.textMuted,
-                            textColor: AppTheme.textPrimary,
-                            fillColor: AppTheme.surfaceVariant,
+                            textColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            fillColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.surfaceVariant,
                             keyboardType: const TextInputType.numberWithOptions(
                               decimal: true,
                             ),
@@ -399,11 +488,19 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                           child: SriTextField(
                             controller: lon,
                             label: 'Longitude',
-                            labelColor: AppTheme.textPrimary,
-                            borderColor: AppTheme.border,
+                            labelColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            borderColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.border,
                             iconColor: AppTheme.textMuted,
-                            textColor: AppTheme.textPrimary,
-                            fillColor: AppTheme.surfaceVariant,
+                            textColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            fillColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.surfaceVariant,
                             readOnly: !editing,
                             keyboardType: const TextInputType.numberWithOptions(
                               decimal: true,
@@ -426,11 +523,19 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                           child: SriTextField(
                             controller: radius,
                             label: 'Radius (m)',
-                            labelColor: AppTheme.textPrimary,
-                            borderColor: AppTheme.border,
+                            labelColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            borderColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.border,
                             iconColor: AppTheme.textMuted,
-                            textColor: AppTheme.textPrimary,
-                            fillColor: AppTheme.surfaceVariant,
+                            textColor: isDark
+                                ? AppTheme.secondaryLight
+                                : AppTheme.textPrimary,
+                            fillColor: isDark
+                                ? AppTheme.sidebarLight
+                                : AppTheme.surfaceVariant,
                             readOnly: !editing,
                             keyboardType: TextInputType.number,
                             prefixIcon: Icons.circle_outlined,

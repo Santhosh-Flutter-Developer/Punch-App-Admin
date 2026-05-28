@@ -82,14 +82,21 @@ class CompanyController extends GetxController {
     filteredCompanies.value = list;
   }
 
-  void onSearch(String v) => searchQuery.value = v;
+  void onSearch(String v) {
+    selectedIndex.value = 0;
+    searchQuery.value = v;
+  }
 
   Widget buildToolbar(bool isDark) {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
-      decoration: const BoxDecoration(
-        color: AppTheme.surface,
-        border: Border(bottom: BorderSide(color: AppTheme.border)),
+      decoration: BoxDecoration(
+        color: isDark ? AppTheme.sidebarLight : AppTheme.surface,
+        border: Border(
+          bottom: BorderSide(
+            color: isDark ? AppTheme.sidebarDark : AppTheme.border,
+          ),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,7 +118,7 @@ class CompanyController extends GetxController {
                   filterChip('All', selectedOrgFilter.isEmpty, () {
                     selectedIndex.value = 0;
                     selectedOrgFilter.value = '';
-                  }),
+                  }, isDark),
                   const SizedBox(width: 8),
                   ...organizations.map(
                     (o) => Padding(
@@ -123,6 +130,7 @@ class CompanyController extends GetxController {
                           selectedIndex.value = 0;
                           selectedOrgFilter.value = o['id'];
                         },
+                        isDark,
                       ),
                     ),
                   ),
@@ -135,11 +143,11 @@ class CompanyController extends GetxController {
     );
   }
 
-  Widget companyBody(BuildContext context) {
-    return branchList();
+  Widget companyBody(BuildContext context, bool isDark) {
+    return branchList(isDark);
   }
 
-  Widget branchList() {
+  Widget branchList(bool isDark) {
     return Obx(
       () => selected.value
           ? SizedBox()
@@ -158,8 +166,10 @@ class CompanyController extends GetxController {
                   },
                 );
               },
-              separatorBuilder: (_, _) =>
-                  const Divider(height: 1.0, color: AppTheme.border),
+              separatorBuilder: (_, _) => Divider(
+                height: 1.0,
+                color: isDark ? AppTheme.sidebarDark : AppTheme.border,
+              ),
               itemCount: filteredCompanies.length,
             ),
     );
@@ -176,7 +186,12 @@ class CompanyController extends GetxController {
     ),
   );
 
-  Widget filterChip(String label, bool selected, VoidCallback onTap) {
+  Widget filterChip(
+    String label,
+    bool selected,
+    VoidCallback onTap,
+    bool isDark,
+  ) {
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
@@ -184,11 +199,17 @@ class CompanyController extends GetxController {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
         decoration: BoxDecoration(
           gradient: selected ? AppTheme.secondaryGradient : null,
-          color: selected ? null : AppTheme.surfaceVariant,
+          color: selected
+              ? null
+              : isDark
+              ? AppTheme.sidebarDark
+              : AppTheme.surfaceVariant,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: selected
                 ? AppTheme.secondary.withOpacity(0.3)
+                : isDark
+                ? AppTheme.sidebarDark
                 : AppTheme.border,
           ),
           boxShadow: selected

@@ -26,11 +26,14 @@ class Companies extends StatelessWidget {
             ?
               // Refresh
               TextButton.icon(
-                onPressed:controller.fetchAll,
+                onPressed: controller.fetchAll,
                 icon: const Icon(Icons.refresh_rounded, size: 15),
                 label: const Text('Refresh', style: TextStyle(fontSize: 13)),
               )
-            : IconButton(onPressed: controller.fetchAll, icon: Icon(Icons.refresh_rounded)),
+            : IconButton(
+                onPressed: controller.fetchAll,
+                icon: Icon(Icons.refresh_rounded),
+              ),
       ],
       child: isWide
           ? wideUI(isDark, context: context, isWide: isWide)
@@ -64,7 +67,7 @@ class Companies extends StatelessWidget {
               return RefreshIndicator(
                 onRefresh: controller.fetchAll,
                 color: AppTheme.secondary,
-                child: controller.companyBody(context),
+                child: controller.companyBody(context, isDark),
               );
             }),
           ),
@@ -91,7 +94,7 @@ class Companies extends StatelessWidget {
               Container(
                 width: 1,
                 height: double.infinity,
-                color: AppTheme.border,
+                color: isDark ? AppTheme.sidebarLight : AppTheme.border,
               ),
               Expanded(child: companyDetails()),
             ],

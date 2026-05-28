@@ -17,6 +17,7 @@ class BranchTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final isWide = size.width > 800;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return SafeArea(
       top: false,
       child: InkWell(
@@ -79,7 +80,11 @@ class BranchTile extends StatelessWidget {
                               color: isWide
                                   ? isActive
                                         ? AppTheme.primaryColor
+                                        : isDark
+                                        ? AppTheme.surface
                                         : AppTheme.textPrimary
+                                  : isDark
+                                  ? AppTheme.surface
                                   : AppTheme.textPrimary,
                             ),
                             overflow: TextOverflow.ellipsis,
