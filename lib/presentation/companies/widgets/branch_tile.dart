@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sri_hr_admin/core/theme/app_theme.dart';
 
 class BranchTile extends StatelessWidget {
@@ -108,6 +109,29 @@ class BranchTile extends StatelessWidget {
                         color: AppTheme.textMuted,
                       ),
                       overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 3.0),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.calendar_today_rounded,
+                          size: 11,
+                          color: AppTheme.textTertiary,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          company['created_at'] != null
+                              ? DateFormat(
+                                  'MMM d, yyyy',
+                                ).format(DateTime.parse(company['created_at']))
+                              : '',
+                          style: const TextStyle(
+                            fontSize: 11,
+                            color: AppTheme.textMuted,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
                     ),
                   ],
                 ),
