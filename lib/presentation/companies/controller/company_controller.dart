@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sri_hr_admin/core/constants/app_constants.dart';
+import 'package:sri_hr_admin/core/helper/helper.dart';
 import 'package:sri_hr_admin/core/theme/app_theme.dart';
 import 'package:sri_hr_admin/presentation/companies/widgets/branch_tile.dart';
 import 'package:sri_hr_admin/widgets/search_field.dart';
@@ -9,7 +10,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class CompanyController extends GetxController {
   final supabase = Supabase.instance.client;
   final isLoading = true.obs;
-  final TextEditingController searchController=TextEditingController();
+  final TextEditingController searchController = TextEditingController();
   final companies = <Map<String, dynamic>>[].obs;
   final filteredCompanies = <Map<String, dynamic>>[].obs;
   final organizations = <Map<String, dynamic>>[].obs;
@@ -51,7 +52,7 @@ class CompanyController extends GetxController {
       organizations.value = List<Map<String, dynamic>>.from(results[1]);
       applyFilter();
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load companies');
+      showError('Failed to load companies', title: 'Error');
     } finally {
       isLoading.value = false;
     }

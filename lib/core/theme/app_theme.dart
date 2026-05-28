@@ -8,6 +8,7 @@ class AppTheme {
   static const Color successColor = Color(0xFF10B981);
   static const Color warningColor = Color(0xFFF59E0B);
   static const Color errorColor = Color(0xFFEF4444);
+  static const Color accent = Color(0xFFFF6B6B);
   static const Color sidebarDark = Color(0xFF0F172A);
   static const Color sidebarLight = Color(0xFF1E293B);
   static const Color surfaceVariant = Color(0xFFF3F4F6);
@@ -19,6 +20,10 @@ class AppTheme {
   static const Color textPrimary = Color(0xFF0F172A);
   static const Color success = Color(0xFF22C55E);
   static const Color textMuted = Color(0xFF94A3B8);
+  static const Color successLight = Color(0xFFDCFCE7);
+  static const Color info = Color(0xFF2196F3);
+  static const Color infoLight = Color(0xFFE3F2FD);
+  static const Color secondaryLight = Color(0xFFE0FAF5);
 
   // Gradients
   static const LinearGradient primaryGradient = LinearGradient(
