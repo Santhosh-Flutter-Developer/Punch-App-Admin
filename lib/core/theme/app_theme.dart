@@ -10,6 +10,32 @@ class AppTheme {
   static const Color errorColor = Color(0xFFEF4444);
   static const Color sidebarDark = Color(0xFF0F172A);
   static const Color sidebarLight = Color(0xFF1E293B);
+  static const Color surfaceVariant = Color(0xFFF3F4F6);
+  static const Color textTertiary = Color(0xFF9CA3AF);
+  static const Color border = Color(0xFFE8EAED);
+  static const Color surface = Color(0xFFFFFFFF);
+
+  // Gradients
+  static const LinearGradient primaryGradient = LinearGradient(
+    colors: [Color(0xFF6C63FF), Color(0xFF9C8FFF)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+  static const LinearGradient secondaryGradient = LinearGradient(
+    colors: [Color(0xFF00D4AA), Color(0xFF00B894)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+  static const LinearGradient accentGradient = LinearGradient(
+    colors: [Color(0xFFFF6B6B), Color(0xFFFF8E8E)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+  static const LinearGradient warningGradient = LinearGradient(
+    colors: [Color(0xFFFFB800), Color(0xFFFFD54F)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
 
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
