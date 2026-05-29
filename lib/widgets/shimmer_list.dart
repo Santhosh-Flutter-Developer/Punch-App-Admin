@@ -7,6 +7,7 @@ class ShimmerList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return SingleChildScrollView(
       child: ResponsiveGridRow(
         children: List.generate(5, (i) {
@@ -17,11 +18,11 @@ class ShimmerList extends StatelessWidget {
             xs: 12,
             sm: 12,
             child: Padding(
-              padding: const EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.all(12),
               child: Container(
                 height: 90,
                 decoration: BoxDecoration(
-                  color: AppTheme.surface,
+                  color: isDark ? AppTheme.sidebarLight : AppTheme.surface,
                   borderRadius: BorderRadius.circular(18),
                 ),
               ),
