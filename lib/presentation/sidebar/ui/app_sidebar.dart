@@ -16,18 +16,13 @@ const items = <NavItem>[
     Icons.corporate_fare_rounded,
     AppRoutes.organizations,
   ),
+  NavItem('Designations', Icons.manage_accounts_rounded, AppRoutes.roles),
   NavItem('Companies', Icons.business_rounded, AppRoutes.companies),
   NavItem('Departments', Icons.account_tree_rounded, AppRoutes.departments),
-  NavItem('Employees', Icons.people_rounded, AppRoutes.employees),
   NavItem('Employee Statuses', Icons.badge_rounded, AppRoutes.employeeStatuses),
-  NavItem('Roles', Icons.manage_accounts_rounded, AppRoutes.roles),
-  NavItem(
-    'Role Permissions',
-    Icons.security_rounded,
-    AppRoutes.rolePermissions,
-  ),
   NavItem('Salary Types', Icons.payments_rounded, AppRoutes.salaryTypes),
-  NavItem('Holidays', Icons.celebration_rounded, AppRoutes.holidays),
+  NavItem('Employees', Icons.people_rounded, AppRoutes.employees),
+  NavItem('Holiday Entries', Icons.celebration_rounded, AppRoutes.holidays),
   NavItem('Leave Requests', Icons.event_busy_rounded, AppRoutes.leaveRequests),
   NavItem(
     'Permission Requests',
@@ -35,27 +30,32 @@ const items = <NavItem>[
     AppRoutes.permissionRequests,
   ),
   NavItem(
-    'Attendance Logs',
+    'Attendance Reports',
     Icons.fingerprint_rounded,
     AppRoutes.attendanceLogs,
   ),
-  NavItem('Payments', Icons.credit_card_rounded, AppRoutes.payments),
+  // NavItem(
+  //   'Role Permissions',
+  //   Icons.security_rounded,
+  //   AppRoutes.rolePermissions,
+  // ),
+  // NavItem('Payments', Icons.credit_card_rounded, AppRoutes.payments),
   NavItem(
     'Subscriptions',
     Icons.subscriptions_rounded,
     AppRoutes.subscriptions,
   ),
-  NavItem(
-    'Subscription Plans',
-    Icons.workspace_premium_rounded,
-    AppRoutes.subscriptionPlans,
-  ),
-  NavItem(
-    'User Company Access',
-    Icons.admin_panel_settings_rounded,
-    AppRoutes.userCompanyAccess,
-  ),
-  NavItem('Users', Icons.person_rounded, AppRoutes.users),
+  // NavItem(
+  //   'Subscription Plans',
+  //   Icons.workspace_premium_rounded,
+  //   AppRoutes.subscriptionPlans,
+  // ),
+  // NavItem(
+  //   'User Company Access',
+  //   Icons.admin_panel_settings_rounded,
+  //   AppRoutes.userCompanyAccess,
+  // ),
+  // NavItem('Users', Icons.person_rounded, AppRoutes.users),
 ];
 
 class AppSidebar extends StatelessWidget {
