@@ -3,6 +3,7 @@ import 'package:punch_app_admin/presentation/auth/login/ui/login.dart';
 import 'package:punch_app_admin/presentation/companies/ui/companies.dart';
 import 'package:punch_app_admin/presentation/dashboard/ui/dashboard.dart';
 import 'package:punch_app_admin/presentation/departments/ui/departments.dart';
+import 'package:punch_app_admin/presentation/employee_statuses/ui/employee_statuses.dart';
 import 'package:punch_app_admin/presentation/employees/ui/employees.dart';
 import 'package:punch_app_admin/presentation/organization/ui/organization.dart';
 import 'package:punch_app_admin/routes/app_routes.dart';
@@ -15,5 +16,6 @@ class AppPages {
     GetPage(name: AppRoutes.companies, page: () => Companies()),
     GetPage(name: AppRoutes.departments, page: () => Departments()),
     GetPage(name: AppRoutes.employees, page: () => Employees()),
+    GetPage(name: AppRoutes.employeeStatuses, page: () => EmployeeStatuses()),
   ];
 }

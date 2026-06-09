@@ -24,6 +24,7 @@ class AppTheme {
   static const Color info = Color(0xFF2196F3);
   static const Color infoLight = Color(0xFFE3F2FD);
   static const Color secondaryLight = Color(0xFFE0FAF5);
+  static const Color accentGreen = Color(0xFF10B981);
 
   // Gradients
   static const LinearGradient primaryGradient = LinearGradient(

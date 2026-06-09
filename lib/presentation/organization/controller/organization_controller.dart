@@ -224,10 +224,12 @@ class OrganizationController extends GetxController {
                       children: [
                         Text(
                           name,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 16,
-                            color: AppTheme.textPrimary,
+                            color: isDark
+                                ? AppTheme.surface
+                                : AppTheme.textPrimary,
                           ),
                         ),
                         const SizedBox(height: 6),
