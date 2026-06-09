@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_grid/responsive_grid.dart';
-import 'package:sri_hr_admin/core/theme/app_theme.dart';
-import 'package:sri_hr_admin/presentation/organization/controller/organization_controller.dart';
-import 'package:sri_hr_admin/widgets/empty_state.dart';
-import 'package:sri_hr_admin/widgets/main_layout.dart';
+import 'package:punch_app_admin/core/theme/app_theme.dart';
+import 'package:punch_app_admin/presentation/organization/controller/organization_controller.dart';
+import 'package:punch_app_admin/widgets/empty_state.dart';
+import 'package:punch_app_admin/widgets/main_layout.dart';
 
 class Organization extends StatelessWidget {
   Organization({super.key});
@@ -56,31 +56,33 @@ class Organization extends StatelessWidget {
               }
               return RefreshIndicator(
                 onRefresh: controller.fetchOrganizations,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(
-                    isWide ? 20 : 10,
-                    16,
-                    isWide ? 20 : 10,
-                    12,
-                  ),
-                  child: ResponsiveGridRow(
-                    children: List.generate(controller.filteredOrgs.length, (
-                      i,
-                    ) {
-                      return ResponsiveGridCol(
-                        xl: 4,
-                        lg: 4,
-                        md: 6,
-                        xs: 12,
-                        sm: 12,
-                        child: controller.buildCard(
-                          isDark,
-                          context: context,
-                          org: controller.filteredOrgs[i],
-                          index: i,
-                        ),
-                      );
-                    }),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(
+                      isWide ? 20 : 10,
+                      16,
+                      isWide ? 20 : 10,
+                      12,
+                    ),
+                    child: ResponsiveGridRow(
+                      children: List.generate(controller.filteredOrgs.length, (
+                        i,
+                      ) {
+                        return ResponsiveGridCol(
+                          xl: 4,
+                          lg: 4,
+                          md: 6,
+                          xs: 12,
+                          sm: 12,
+                          child: controller.buildCard(
+                            isDark,
+                            context: context,
+                            org: controller.filteredOrgs[i],
+                            index: i,
+                          ),
+                        );
+                      }),
+                    ),
                   ),
                 ),
               );

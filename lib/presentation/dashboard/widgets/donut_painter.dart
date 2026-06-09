@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:sri_hr_admin/presentation/dashboard/models/seg.dart';
+import 'package:punch_app_admin/presentation/dashboard/models/seg.dart';
 
 class DonutPainter extends CustomPainter {
   final List<Seg> segs;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sri_hr_admin/presentation/dashboard/widgets/shimmer.dart';
+import 'package:punch_app_admin/presentation/dashboard/widgets/shimmer.dart';
 
 class ShimmerList extends StatelessWidget {
   final bool isDark;

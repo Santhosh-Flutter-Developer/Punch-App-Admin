@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sri_hr_admin/core/theme/app_theme.dart';
-import 'package:sri_hr_admin/widgets/sri_button.dart';
+import 'package:punch_app_admin/core/theme/app_theme.dart';
+import 'package:punch_app_admin/widgets/sri_button.dart';
 
 class EmptyState extends StatelessWidget {
   final String message;

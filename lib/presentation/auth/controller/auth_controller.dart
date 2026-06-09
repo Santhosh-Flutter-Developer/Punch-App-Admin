@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sri_hr_admin/routes/app_routes.dart';
-import 'package:sri_hr_admin/services/supabase_service.dart';
+import 'package:punch_app_admin/routes/app_routes.dart';
+import 'package:punch_app_admin/services/supabase_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthController extends GetxController {
@@ -190,7 +190,7 @@ class AuthController extends GetxController {
 
   String get adminEmail => currentUser.value?['email'] ?? '';
 
-  String get companyName => currentCompany.value?['name'] ?? 'Sri HR';
+  String get companyName => currentCompany.value?['name'] ?? 'Punch App';
 
   String get adminInitials {
     final name = adminName.trim();

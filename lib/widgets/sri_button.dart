@@ -1,6 +1,6 @@
 // lib/widgets/app_button.dart
 import 'package:flutter/material.dart';
-import 'package:sri_hr_admin/core/theme/app_theme.dart';
+import 'package:punch_app_admin/core/theme/app_theme.dart';
 
 class SriButton extends StatelessWidget {
   final String label;

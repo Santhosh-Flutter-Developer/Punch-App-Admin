@@ -1,13 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_grid/responsive_grid.dart';
-import 'package:sri_hr_admin/core/constants/app_constants.dart';
-import 'package:sri_hr_admin/core/helper/helper.dart';
-import 'package:sri_hr_admin/core/theme/app_theme.dart';
-import 'package:sri_hr_admin/presentation/employees/widgets/app_avatar.dart';
-import 'package:sri_hr_admin/widgets/app_filter_chip.dart';
-import 'package:sri_hr_admin/widgets/search_field.dart';
+import 'package:punch_app_admin/core/constants/app_constants.dart';
+import 'package:punch_app_admin/core/helper/helper.dart';
+import 'package:punch_app_admin/core/theme/app_theme.dart';
+import 'package:punch_app_admin/presentation/employees/widgets/app_avatar.dart';
+import 'package:punch_app_admin/widgets/app_filter_chip.dart';
+import 'package:punch_app_admin/widgets/search_field.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class EmployeeController extends GetxController {
@@ -39,7 +41,7 @@ class EmployeeController extends GetxController {
         supabase
             .from(AppConstants.tEmployees)
             .select('''
-          id, full_name, employee_code, email, mobile, gender, doj, is_active,
+          id,company_id, full_name, employee_code, email, mobile, gender, doj, is_active,
           profile_picture,
           created_at,
           companies(name, city),
@@ -81,7 +83,7 @@ class EmployeeController extends GetxController {
     if (selectedCompanyFilter.isNotEmpty) {
       list = list.where((e) {
         final comp = e['companies'];
-        return comp != null && comp['name'] == selectedCompanyFilter.value;
+        return e != null && e['company_id'] == selectedCompanyFilter.value;
       }).toList();
     }
     filteredEmployees.value = list;
@@ -122,8 +124,8 @@ class EmployeeController extends GetxController {
                         padding: const EdgeInsets.only(right: 8),
                         child: AppFilterChip(
                           label: c['name'],
-                          selected: selectedCompanyFilter.value == c['name'],
-                          onTap: () => selectedCompanyFilter.value = c['name'],
+                          selected: selectedCompanyFilter.value == c['id'],
+                          onTap: () => selectedCompanyFilter.value = c['id'],
                           color: AppTheme.primaryColor,
                         ),
                       ),
@@ -183,23 +185,25 @@ class EmployeeController extends GetxController {
   }
 
   Widget buildGrid(BuildContext context, bool isWide, bool isDark) {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: ResponsiveGridRow(
-        children: List.generate(filteredEmployees.length, (i) {
-          return ResponsiveGridCol(
-            xl: 4,
-            lg: 4,
-            md: 6,
-            xs: 12,
-            sm: 12,
-            child: buildListCard(
-              employee: filteredEmployees[i],
-              isWide: isWide,
-              isDark: isDark,
-            ),
-          );
-        }),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: ResponsiveGridRow(
+          children: List.generate(filteredEmployees.length, (i) {
+            return ResponsiveGridCol(
+              xl: 4,
+              lg: 4,
+              md: 6,
+              xs: 12,
+              sm: 12,
+              child: buildListCard(
+                employee: filteredEmployees[i],
+                isWide: isWide,
+                isDark: isDark,
+              ),
+            );
+          }),
+        ),
       ),
     );
   }

@@ -36,7 +36,7 @@ class Logo extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Sri HR Admin',
+              'Punch App Admin',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 22,

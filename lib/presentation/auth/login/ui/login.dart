@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sri_hr_admin/presentation/auth/login/widgets/grid_bg_painter.dart';
-import 'package:sri_hr_admin/presentation/auth/login/widgets/narrow_layout.dart';
-import 'package:sri_hr_admin/presentation/auth/login/widgets/orbs.dart';
-import 'package:sri_hr_admin/presentation/auth/login/widgets/wide_layout.dart';
+import 'package:punch_app_admin/presentation/auth/login/widgets/grid_bg_painter.dart';
+import 'package:punch_app_admin/presentation/auth/login/widgets/narrow_layout.dart';
+import 'package:punch_app_admin/presentation/auth/login/widgets/orbs.dart';
+import 'package:punch_app_admin/presentation/auth/login/widgets/wide_layout.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sri_hr_admin/presentation/auth/controller/app_controller.dart';
-import 'package:sri_hr_admin/presentation/auth/controller/auth_controller.dart';
+import 'package:punch_app_admin/presentation/auth/controller/app_controller.dart';
+import 'package:punch_app_admin/presentation/auth/controller/auth_controller.dart';
 
 class Header extends StatelessWidget {
   final bool exp;
@@ -60,7 +60,7 @@ class Header extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Sri HR Admin',
+                      'Punch App Admin',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 13.5,

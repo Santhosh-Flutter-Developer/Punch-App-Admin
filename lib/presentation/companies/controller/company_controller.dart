@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sri_hr_admin/core/constants/app_constants.dart';
-import 'package:sri_hr_admin/core/helper/helper.dart';
-import 'package:sri_hr_admin/core/theme/app_theme.dart';
-import 'package:sri_hr_admin/presentation/companies/widgets/branch_tile.dart';
-import 'package:sri_hr_admin/widgets/search_field.dart';
+import 'package:punch_app_admin/core/constants/app_constants.dart';
+import 'package:punch_app_admin/core/helper/helper.dart';
+import 'package:punch_app_admin/core/theme/app_theme.dart';
+import 'package:punch_app_admin/presentation/companies/widgets/branch_tile.dart';
+import 'package:punch_app_admin/widgets/search_field.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CompanyController extends GetxController {

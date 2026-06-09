@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sri_hr_admin/core/theme/app_theme.dart';
-import 'package:sri_hr_admin/presentation/auth/controller/app_controller.dart';
-import 'package:sri_hr_admin/presentation/auth/controller/auth_controller.dart';
+import 'package:punch_app_admin/core/theme/app_theme.dart';
+import 'package:punch_app_admin/presentation/auth/controller/app_controller.dart';
+import 'package:punch_app_admin/presentation/auth/controller/auth_controller.dart';
 
 class TopBar extends StatelessWidget {
   final AppController app;
@@ -108,7 +108,7 @@ class TopBar extends StatelessWidget {
                         ],
                       ),
                       content: const Text(
-                        'Sign out of Sri HR Admin Panel?',
+                        'Sign out of Punch App Admin Panel?',
                         style: TextStyle(fontSize: 13.5),
                       ),
                       actions: [

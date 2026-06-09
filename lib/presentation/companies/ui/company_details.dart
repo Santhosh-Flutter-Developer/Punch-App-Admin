@@ -2,10 +2,10 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
-import 'package:sri_hr_admin/core/theme/app_theme.dart';
-import 'package:sri_hr_admin/presentation/companies/controller/company_controller.dart';
-import 'package:sri_hr_admin/presentation/companies/widgets/sri_detail_card.dart';
-import 'package:sri_hr_admin/widgets/sri_textfield.dart';
+import 'package:punch_app_admin/core/theme/app_theme.dart';
+import 'package:punch_app_admin/presentation/companies/controller/company_controller.dart';
+import 'package:punch_app_admin/presentation/companies/widgets/sri_detail_card.dart';
+import 'package:punch_app_admin/widgets/sri_textfield.dart';
 
 class CompanyDetails extends StatefulWidget {
   final Map<String, dynamic> company;

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sri_hr_admin/core/theme/app_theme.dart';
-import 'package:sri_hr_admin/presentation/companies/controller/company_controller.dart';
-import 'package:sri_hr_admin/presentation/companies/ui/company_details.dart';
-import 'package:sri_hr_admin/widgets/empty_state.dart';
-import 'package:sri_hr_admin/widgets/main_layout.dart';
-import 'package:sri_hr_admin/widgets/shimmer_list.dart';
+import 'package:punch_app_admin/core/theme/app_theme.dart';
+import 'package:punch_app_admin/presentation/companies/controller/company_controller.dart';
+import 'package:punch_app_admin/presentation/companies/ui/company_details.dart';
+import 'package:punch_app_admin/widgets/empty_state.dart';
+import 'package:punch_app_admin/widgets/main_layout.dart';
+import 'package:punch_app_admin/widgets/shimmer_list.dart';
 
 class Companies extends StatelessWidget {
   Companies({super.key});
@@ -47,7 +47,7 @@ class Companies extends StatelessWidget {
     required bool isWide,
   }) {
     return SizedBox(
-      height: 500,
+      // height: 500,
       width: 400,
       child: Column(
         children: [

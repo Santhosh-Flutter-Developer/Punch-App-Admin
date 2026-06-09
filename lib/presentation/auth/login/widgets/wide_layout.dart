@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sri_hr_admin/presentation/auth/login/widgets/feature_pills.dart';
-import 'package:sri_hr_admin/presentation/auth/login/widgets/login_card.dart';
-import 'package:sri_hr_admin/presentation/auth/login/widgets/logo.dart';
+import 'package:punch_app_admin/presentation/auth/login/widgets/feature_pills.dart';
+import 'package:punch_app_admin/presentation/auth/login/widgets/login_card.dart';
+import 'package:punch_app_admin/presentation/auth/login/widgets/logo.dart';
 
 class WideLayout extends StatelessWidget {
   final Animation<double> cardAnim;

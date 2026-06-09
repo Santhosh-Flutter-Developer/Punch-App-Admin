@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
-import 'package:sri_hr_admin/presentation/auth/login/ui/login.dart';
-import 'package:sri_hr_admin/presentation/companies/ui/companies.dart';
-import 'package:sri_hr_admin/presentation/dashboard/ui/dashboard.dart';
-import 'package:sri_hr_admin/presentation/departments/ui/departments.dart';
-import 'package:sri_hr_admin/presentation/employees/ui/employees.dart';
-import 'package:sri_hr_admin/presentation/organization/ui/organization.dart';
-import 'package:sri_hr_admin/routes/app_routes.dart';
+import 'package:punch_app_admin/presentation/auth/login/ui/login.dart';
+import 'package:punch_app_admin/presentation/companies/ui/companies.dart';
+import 'package:punch_app_admin/presentation/dashboard/ui/dashboard.dart';
+import 'package:punch_app_admin/presentation/departments/ui/departments.dart';
+import 'package:punch_app_admin/presentation/employees/ui/employees.dart';
+import 'package:punch_app_admin/presentation/organization/ui/organization.dart';
+import 'package:punch_app_admin/routes/app_routes.dart';
 
 class AppPages {
   static final routes = [

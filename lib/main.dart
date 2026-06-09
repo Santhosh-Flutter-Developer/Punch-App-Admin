@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sri_hr_admin/core/theme/app_theme.dart';
-import 'package:sri_hr_admin/presentation/auth/controller/app_controller.dart';
-import 'package:sri_hr_admin/presentation/auth/controller/auth_controller.dart';
-import 'package:sri_hr_admin/routes/app_pages.dart';
-import 'package:sri_hr_admin/routes/app_routes.dart';
-import 'package:sri_hr_admin/services/supabase_service.dart';
+import 'package:punch_app_admin/core/theme/app_theme.dart';
+import 'package:punch_app_admin/presentation/auth/controller/app_controller.dart';
+import 'package:punch_app_admin/presentation/auth/controller/auth_controller.dart';
+import 'package:punch_app_admin/routes/app_pages.dart';
+import 'package:punch_app_admin/routes/app_routes.dart';
+import 'package:punch_app_admin/services/supabase_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SupabaseService.initialize();
   Get.put(AppController(), permanent: true);
   Get.put(AuthController(), permanent: true);
-  runApp(const SriHRAdminApp());
+  runApp(const PunchAppAdmin());
 }
 
-class SriHRAdminApp extends StatelessWidget {
-  const SriHRAdminApp({super.key});
+class PunchAppAdmin extends StatelessWidget {
+  const PunchAppAdmin({super.key});
 
   @override
   Widget build(BuildContext context) {
     final appCtrl = Get.find<AppController>();
     return Obx(
       () => GetMaterialApp(
-        title: 'Sri HR',
+        title: 'Punch App Admin',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,

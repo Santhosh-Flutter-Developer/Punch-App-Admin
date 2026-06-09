@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:sri_hr_admin/presentation/auth/controller/app_controller.dart';
-import 'package:sri_hr_admin/presentation/auth/controller/auth_controller.dart';
-import 'package:sri_hr_admin/presentation/sidebar/widgets/footer.dart';
-import 'package:sri_hr_admin/presentation/sidebar/widgets/header.dart';
-import 'package:sri_hr_admin/presentation/sidebar/widgets/nav_item.dart';
-import 'package:sri_hr_admin/presentation/sidebar/widgets/nav_tile.dart';
-import 'package:sri_hr_admin/routes/app_routes.dart';
+import 'package:punch_app_admin/presentation/auth/controller/app_controller.dart';
+import 'package:punch_app_admin/presentation/auth/controller/auth_controller.dart';
+import 'package:punch_app_admin/presentation/sidebar/widgets/footer.dart';
+import 'package:punch_app_admin/presentation/sidebar/widgets/header.dart';
+import 'package:punch_app_admin/presentation/sidebar/widgets/nav_item.dart';
+import 'package:punch_app_admin/presentation/sidebar/widgets/nav_tile.dart';
+import 'package:punch_app_admin/routes/app_routes.dart';
 
 const items = <NavItem>[
   NavItem('Dashboard', Icons.dashboard_rounded, AppRoutes.dashboard),

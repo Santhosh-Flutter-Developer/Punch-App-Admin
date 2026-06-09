@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sri_hr_admin/presentation/auth/controller/app_controller.dart';
-import 'package:sri_hr_admin/presentation/sidebar/widgets/nav_item.dart';
+import 'package:punch_app_admin/presentation/auth/controller/app_controller.dart';
+import 'package:punch_app_admin/presentation/sidebar/widgets/nav_item.dart';
 
 class NavTile extends StatelessWidget {
   final NavItem item;

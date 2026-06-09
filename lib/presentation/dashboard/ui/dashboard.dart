@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sri_hr_admin/presentation/dashboard/controller/dashboard_controller.dart';
-import 'package:sri_hr_admin/services/supabase_service.dart';
-import 'package:sri_hr_admin/widgets/main_layout.dart';
+import 'package:punch_app_admin/presentation/dashboard/controller/dashboard_controller.dart';
+import 'package:punch_app_admin/services/supabase_service.dart';
+import 'package:punch_app_admin/widgets/main_layout.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});

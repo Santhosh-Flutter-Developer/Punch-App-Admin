@@ -3,22 +3,22 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_grid/responsive_grid.dart';
-import 'package:sri_hr_admin/core/theme/app_theme.dart';
-import 'package:sri_hr_admin/presentation/auth/controller/app_controller.dart';
-import 'package:sri_hr_admin/presentation/dashboard/models/act.dart';
-import 'package:sri_hr_admin/presentation/dashboard/models/bar.dart';
-import 'package:sri_hr_admin/presentation/dashboard/models/kpi.dart';
-import 'package:sri_hr_admin/presentation/dashboard/models/mod.dart';
-import 'package:sri_hr_admin/presentation/dashboard/models/seg.dart';
-import 'package:sri_hr_admin/presentation/dashboard/models/summ_stat.dart';
-import 'package:sri_hr_admin/presentation/dashboard/widgets/bar_shimmer.dart';
-import 'package:sri_hr_admin/presentation/dashboard/widgets/card_widget.dart';
-import 'package:sri_hr_admin/presentation/dashboard/widgets/donut_painter.dart';
-import 'package:sri_hr_admin/presentation/dashboard/widgets/shimmer.dart';
-import 'package:sri_hr_admin/presentation/dashboard/widgets/shimmer_list.dart';
-import 'package:sri_hr_admin/routes/app_routes.dart';
-import 'package:sri_hr_admin/presentation/dashboard/widgets/dot_grid_painter.dart';
-import 'package:sri_hr_admin/widgets/hero_pill.dart';
+import 'package:punch_app_admin/core/theme/app_theme.dart';
+import 'package:punch_app_admin/presentation/auth/controller/app_controller.dart';
+import 'package:punch_app_admin/presentation/dashboard/models/act.dart';
+import 'package:punch_app_admin/presentation/dashboard/models/bar.dart';
+import 'package:punch_app_admin/presentation/dashboard/models/kpi.dart';
+import 'package:punch_app_admin/presentation/dashboard/models/mod.dart';
+import 'package:punch_app_admin/presentation/dashboard/models/seg.dart';
+import 'package:punch_app_admin/presentation/dashboard/models/summ_stat.dart';
+import 'package:punch_app_admin/presentation/dashboard/widgets/bar_shimmer.dart';
+import 'package:punch_app_admin/presentation/dashboard/widgets/card_widget.dart';
+import 'package:punch_app_admin/presentation/dashboard/widgets/donut_painter.dart';
+import 'package:punch_app_admin/presentation/dashboard/widgets/shimmer.dart';
+import 'package:punch_app_admin/presentation/dashboard/widgets/shimmer_list.dart';
+import 'package:punch_app_admin/routes/app_routes.dart';
+import 'package:punch_app_admin/presentation/dashboard/widgets/dot_grid_painter.dart';
+import 'package:punch_app_admin/widgets/hero_pill.dart';
 
 class DashboardController extends GetxController {
   Widget buildError({required Function()? onpressed, required String? error}) {
@@ -165,7 +165,7 @@ class DashboardController extends GetxController {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                'Sri HR Admin',
+                                'Punch App Admin',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 24,

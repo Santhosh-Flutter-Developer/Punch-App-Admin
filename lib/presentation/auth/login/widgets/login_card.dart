@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sri_hr_admin/core/theme/app_theme.dart';
-import 'package:sri_hr_admin/presentation/auth/controller/auth_controller.dart';
-import 'package:sri_hr_admin/widgets/sri_button.dart';
-import 'package:sri_hr_admin/widgets/sri_textfield.dart';
+import 'package:punch_app_admin/core/theme/app_theme.dart';
+import 'package:punch_app_admin/presentation/auth/controller/auth_controller.dart';
+import 'package:punch_app_admin/widgets/sri_button.dart';
+import 'package:punch_app_admin/widgets/sri_textfield.dart';
 
 class LoginCard extends StatelessWidget {
   final GlobalKey<FormState> formKey;
@@ -110,7 +110,7 @@ class LoginCard extends StatelessWidget {
             ),
             const SizedBox(height: 6),
             Text(
-              'Sign in to manage Sri HR',
+              'Sign in to manage Punch App',
               style: TextStyle(
                 color: Colors.white.withOpacity(0.45),
                 fontSize: 14,

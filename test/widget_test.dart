@@ -8,12 +8,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:sri_hr_admin/main.dart';
+import 'package:punch_app_admin/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const SriHRAdminApp());
+    await tester.pumpWidget(const PunchAppAdmin());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

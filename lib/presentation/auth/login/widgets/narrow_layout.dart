@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sri_hr_admin/presentation/auth/login/widgets/login_card.dart';
+import 'package:punch_app_admin/presentation/auth/login/widgets/login_card.dart';
 
 class NarrowLayout extends StatelessWidget {
   final Animation<double> cardAnim;

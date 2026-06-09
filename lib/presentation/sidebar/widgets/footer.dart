@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sri_hr_admin/core/theme/app_theme.dart';
-import 'package:sri_hr_admin/presentation/auth/controller/app_controller.dart';
-import 'package:sri_hr_admin/presentation/auth/controller/auth_controller.dart';
-import 'package:sri_hr_admin/presentation/sidebar/widgets/avatar.dart';
+import 'package:punch_app_admin/core/theme/app_theme.dart';
+import 'package:punch_app_admin/presentation/auth/controller/app_controller.dart';
+import 'package:punch_app_admin/presentation/auth/controller/auth_controller.dart';
+import 'package:punch_app_admin/presentation/sidebar/widgets/avatar.dart';
 
 class Footer extends StatelessWidget {
   final bool exp;

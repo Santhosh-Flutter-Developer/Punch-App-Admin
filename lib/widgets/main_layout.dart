@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sri_hr_admin/presentation/auth/controller/app_controller.dart';
-import 'package:sri_hr_admin/presentation/auth/controller/auth_controller.dart';
-import 'package:sri_hr_admin/presentation/sidebar/ui/app_sidebar.dart';
-import 'package:sri_hr_admin/widgets/top_bar.dart';
+import 'package:punch_app_admin/presentation/auth/controller/app_controller.dart';
+import 'package:punch_app_admin/presentation/auth/controller/auth_controller.dart';
+import 'package:punch_app_admin/presentation/sidebar/ui/app_sidebar.dart';
+import 'package:punch_app_admin/widgets/top_bar.dart';
 
 class MainLayout extends StatelessWidget {
   final Widget child;
