@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -82,8 +80,7 @@ class EmployeeController extends GetxController {
     }
     if (selectedCompanyFilter.isNotEmpty) {
       list = list.where((e) {
-        final comp = e['companies'];
-        return e != null && e['company_id'] == selectedCompanyFilter.value;
+        return e['company_id'] == selectedCompanyFilter.value;
       }).toList();
     }
     filteredEmployees.value = list;
