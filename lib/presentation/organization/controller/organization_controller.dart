@@ -147,7 +147,7 @@ class OrganizationController extends GetxController {
     final size = MediaQuery.of(context).size;
     final isWide = size.width > 800;
     final createdAt = org['created_at'] != null
-        ? DateFormat('MMM d, yyyy').format(DateTime.parse(org['created_at']))
+        ? DateFormat('dd MMM yyyy').format(DateTime.parse(org['created_at']))
         : '';
     final prefix = (org['org_prefix'] ?? 'ORG').toString();
     final name = (org['name'] ?? '').toString();
