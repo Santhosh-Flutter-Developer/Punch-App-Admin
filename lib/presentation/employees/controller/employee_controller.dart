@@ -217,7 +217,7 @@ class EmployeeController extends GetxController {
     final status = employee['employee_statuses'];
     final createdAt = employee['created_at'] != null
         ? DateFormat(
-            'MMM d, yyyy',
+            'dd MMM yyyy',
           ).format(DateTime.parse(employee['created_at']))
         : '';
     return Padding(

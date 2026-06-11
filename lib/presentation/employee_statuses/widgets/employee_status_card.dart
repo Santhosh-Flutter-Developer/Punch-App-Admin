@@ -11,7 +11,7 @@ class EmployeeStatusCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final company = item['companies'];
     final createdAt = item['created_at'] != null
-        ? DateFormat('MMM d, yyyy').format(DateTime.parse(item['created_at']))
+        ? DateFormat('dd MMM yyyy').format(DateTime.parse(item['created_at']))
         : '';
     return Container(
       margin: const EdgeInsets.only(bottom: 10.0),
