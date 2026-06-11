@@ -25,12 +25,22 @@ class AuthController extends GetxController {
       final session = SupabaseService.client.auth.currentSession;
       if (session != null && session.user.email != null) {
         debugPrint('🔄 Existing session found: ${session.user.email}');
-        await loadUserByEmail(session.user.email!);
+        // Only restore session for the designated super admin
+        if (session.user.email == _superAdminEmail) {
+          await loadUserByEmail(session.user.email!);
+        } else {
+          debugPrint('⛔ Session belongs to non-admin user — signing out');
+          await SupabaseService.client.auth.signOut();
+        }
       }
     } catch (e) {
       debugPrint("_checkSession error: $e");
     }
   }
+
+  // ── Allowed super admin credentials ──────────────────────────
+  static const String _superAdminEmail = 'admin@srisoftwarez.com';
+  static const String _superAdminPassword = 'Admin@123';
 
   // ── Main login ────────────────────────────────────────────────
   Future<void> login(String input, String password) async {
@@ -39,6 +49,12 @@ class AuthController extends GetxController {
     try {
       final trimmed = input.trim();
       debugPrint('🔐 Login attempt: $trimmed');
+
+      // Step 0: Only allow the designated super admin credentials
+      if (trimmed != _superAdminEmail || password != _superAdminPassword) {
+        errorMsg.value = 'Access denied. Invalid super admin credentials.';
+        return;
+      }
 
       // Step 1: Find user row by email OR username
       Map<String, dynamic>? userRow;
