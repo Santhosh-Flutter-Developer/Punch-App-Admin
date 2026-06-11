@@ -101,20 +101,24 @@ class BranchTile extends StatelessWidget {
                           ),
                       ],
                     ),
-                    const SizedBox(height: 3.0),
-                    Text(
-                      [
-                        if (company["city"]?.isNotEmpty == true)
-                          company["city"]!,
-                        if (company["state"]?.isNotEmpty == true)
-                          company["state"]!,
-                      ].join(', '),
-                      style: const TextStyle(
-                        fontSize: 11,
-                        color: AppTheme.textMuted,
+                    if (company["city"]?.isNotEmpty == true ||
+                        company["state"]?.isNotEmpty == true)
+                      const SizedBox(height: 3.0),
+                    if (company["city"]?.isNotEmpty == true ||
+                        company["state"]?.isNotEmpty == true)
+                      Text(
+                        [
+                          if (company["city"]?.isNotEmpty == true)
+                            company["city"]!,
+                          if (company["state"]?.isNotEmpty == true)
+                            company["state"]!,
+                        ].join(', '),
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: AppTheme.textMuted,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
                     const SizedBox(height: 3.0),
                     Row(
                       children: [
@@ -127,7 +131,7 @@ class BranchTile extends StatelessWidget {
                         Text(
                           company['created_at'] != null
                               ? DateFormat(
-                                  'MMM d, yyyy',
+                                  'dd MMM yyyy',
                                 ).format(DateTime.parse(company['created_at']))
                               : '',
                           style: const TextStyle(
