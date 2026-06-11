@@ -267,7 +267,7 @@ class DashboardController extends GetxController {
         Icons.people_rounded,
         const Color(0xFF3B82F6),
         const Color(0xFF1D4ED8),
-        '↑ 12%',
+        '',
       ),
       KPI(
         'Active Companies',
@@ -275,16 +275,16 @@ class DashboardController extends GetxController {
         Icons.business_rounded,
         const Color(0xFF10B981),
         const Color(0xFF047857),
-        '↑ 5%',
+        '',
       ),
-      KPI(
-        'Leave Requests',
-        counts['leave_requests'] ?? 0,
-        Icons.event_busy_rounded,
-        const Color(0xFFF59E0B),
-        const Color(0xFFB45309),
-        '${recentLeaves.where((l) => l['status'] == 'pending').length} pending',
-      ),
+      // KPI(
+      //   'Leave Requests',
+      //   counts['leave_requests'] ?? 0,
+      //   Icons.event_busy_rounded,
+      //   const Color(0xFFF59E0B),
+      //   const Color(0xFFB45309),
+      //   '${recentLeaves.where((l) => l['status'] == 'pending').length} pending',
+      // ),
       KPI(
         'Subscriptions',
         counts['subscriptions'] ?? 0,
@@ -320,7 +320,7 @@ class DashboardController extends GetxController {
                   final routes = [
                     AppRoutes.employees,
                     AppRoutes.companies,
-                    AppRoutes.leaveRequests,
+                    // AppRoutes.leaveRequests,
                     AppRoutes.subscriptions,
                   ];
                   Get.find<AppController>().currentRoute.value = routes[i];
@@ -367,24 +367,25 @@ class DashboardController extends GetxController {
                             ),
                             child: Icon(k.icon, color: Colors.white, size: 20),
                           ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: k.color.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Text(
-                              k.change,
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: k.color,
-                                fontWeight: FontWeight.w700,
+                          if (k.change.isNotEmpty)
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: k.color.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Text(
+                                k.change,
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: k.color,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ),
-                          ),
                         ],
                       ),
                       SizedBox(height: 12.0),
@@ -434,153 +435,6 @@ class DashboardController extends GetxController {
         );
       }),
     );
-    /*LayoutBuilder(
-      builder: (_, box) {
-        int cols = box.maxWidth > 800
-            ? 4
-            : box.maxWidth > 500
-            ? 2
-            : 1;
-        return GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: cols,
-            crossAxisSpacing: 14,
-            mainAxisSpacing: 14,
-            childAspectRatio: cols == 1 ? 3.5 : 1.85,
-          ),
-          itemCount: kpis.length,
-          itemBuilder: (_, i) {
-            final k = kpis[i];
-            return TweenAnimationBuilder<double>(
-              tween: Tween(begin: 0, end: 1),
-              duration: Duration(milliseconds: 350 + i * 80),
-              builder: (_, v, child) {
-                return Transform.translate(
-                  offset: Offset(0, 16 * (1 - v)),
-                  child: Opacity(opacity: v, child: child),
-                );
-              },
-              child: InkWell(
-                onTap: () {
-                  // Navigate to related screen
-                  final routes = [
-                    AppRoutes.employees,
-                    AppRoutes.companies,
-                    AppRoutes.leaveRequests,
-                    AppRoutes.subscriptions,
-                  ];
-                  Get.find<AppController>().currentRoute.value = routes[i];
-                  Get.toNamed(routes[i]);
-                },
-                borderRadius: BorderRadius.circular(16),
-                child: Container(
-                  padding: const EdgeInsets.all(18),
-                  decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF1E293B) : Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: isDark
-                          ? const Color(0xFF334155)
-                          : const Color(0xFFE2E8F0),
-                    ),
-                    boxShadow: isDark
-                        ? []
-                        : [
-                            BoxShadow(
-                              color: k.color.withOpacity(0.07),
-                              blurRadius: 16,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: 42,
-                            height: 42,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [k.color, k.darkColor],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Icon(k.icon, color: Colors.white, size: 20),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: k.color.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Text(
-                              k.change,
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: k.color,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          loading
-                              ? ShimmerWidget(
-                                  isDark: isDark,
-                                  w: 44,
-                                  h: 26,
-                                  pulseCtrl: pulseCtrl,
-                                )
-                              : TweenAnimationBuilder<int>(
-                                  tween: IntTween(begin: 0, end: k.value),
-                                  duration: const Duration(milliseconds: 1000),
-                                  curve: Curves.easeOut,
-                                  builder: (_, v, _) => Text(
-                                    '$v',
-                                    style: TextStyle(
-                                      fontSize: 26,
-                                      fontWeight: FontWeight.w800,
-                                      color: k.color,
-                                      height: 1,
-                                    ),
-                                  ),
-                                ),
-
-                          const SizedBox(height: 3),
-                          Text(
-                            k.label,
-                            style: TextStyle(
-                              fontSize: 11.5,
-                              color: isDark
-                                  ? const Color(0xFF94A3B8)
-                                  : const Color(0xFF64748B),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );*/
   }
 
   Widget recentActivitySection(
@@ -899,17 +753,17 @@ class DashboardController extends GetxController {
                       pulseCtrl: pulseCtrl,
                     ),
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    flex: 3,
-                    child: summaryStats(isDark, counts: counts),
-                  ),
+                  // const SizedBox(width: 16),
+                  // Expanded(
+                  //   flex: 3,
+                  //   child: summaryStats(isDark, counts: counts),
+                  // ),
                 ],
               )
             : Column(
                 children: [
-                  summaryStats(isDark, counts: counts),
-                  const SizedBox(height: 16),
+                  // summaryStats(isDark, counts: counts),
+                  // const SizedBox(height: 16),
                   quickNav(
                     isDark,
                     counts: counts,
@@ -936,13 +790,13 @@ class DashboardController extends GetxController {
         const Color(0xFF3B82F6),
         AppRoutes.organizations,
       ),
-      Mod(
-        'Departments',
-        counts['departments'] ?? 0,
-        Icons.account_tree_rounded,
-        const Color(0xFF8B5CF6),
-        AppRoutes.departments,
-      ),
+      // Mod(
+      //   'Departments',
+      //   counts['departments'] ?? 0,
+      //   Icons.account_tree_rounded,
+      //   const Color(0xFF8B5CF6),
+      //   AppRoutes.departments,
+      // ),
       Mod(
         'Attendance',
         counts['attendance_logs'] ?? 0,
@@ -950,13 +804,13 @@ class DashboardController extends GetxController {
         const Color(0xFF10B981),
         AppRoutes.attendanceLogs,
       ),
-      Mod(
-        'Payments',
-        counts['payments'] ?? 0,
-        Icons.credit_card_rounded,
-        const Color(0xFFF59E0B),
-        AppRoutes.payments,
-      ),
+      // Mod(
+      //   'Payments',
+      //   counts['payments'] ?? 0,
+      //   Icons.credit_card_rounded,
+      //   const Color(0xFFF59E0B),
+      //   AppRoutes.payments,
+      // ),
       Mod(
         'Holidays',
         counts['holidays'] ?? 0,
@@ -964,13 +818,13 @@ class DashboardController extends GetxController {
         const Color(0xFFEC4899),
         AppRoutes.holidays,
       ),
-      Mod(
-        'Salary Types',
-        counts['salary_types'] ?? 0,
-        Icons.payments_rounded,
-        const Color(0xFF06B6D4),
-        AppRoutes.salaryTypes,
-      ),
+      // Mod(
+      //   'Salary Types',
+      //   counts['salary_types'] ?? 0,
+      //   Icons.payments_rounded,
+      //   const Color(0xFF06B6D4),
+      //   AppRoutes.salaryTypes,
+      // ),
     ];
     return CardWidget(
       isDark: isDark,
@@ -978,7 +832,90 @@ class DashboardController extends GetxController {
       iconColor: const Color(0xFF10B981),
       title: 'Quick Navigate',
       subtitle: 'Jump to any module',
-      child: GridView.builder(
+      child: ResponsiveGridRow(
+        children: [
+          ...List.generate(mods.length, (i) {
+            final m = mods[i];
+            return ResponsiveGridCol(
+              xl: 2,
+              lg: 2,
+              sm: 6,
+              md: 6,
+              xs: 6,
+              child: InkWell(
+                onTap: () {
+                  Get.find<AppController>().currentRoute.value = m.route;
+                  Get.toNamed(m.route);
+                },
+                borderRadius: BorderRadius.circular(10),
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Container(
+                    height: 100,
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: m.color.withOpacity(0.07),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: m.color.withOpacity(0.18)),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            color: m.color.withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Icon(m.icon, color: m.color, size: 16),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              loading
+                                  ? ShimmerWidget(
+                                      isDark: isDark,
+                                      w: 24,
+                                      h: 16,
+                                      pulseCtrl: pulseCtrl,
+                                    )
+                                  : Text(
+                                      '${m.count}',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w800,
+                                        color: m.color,
+                                        height: 1.1,
+                                      ),
+                                    ),
+
+                              Text(
+                                m.label,
+                                style: TextStyle(
+                                  fontSize: 9.5,
+                                  color: isDark
+                                      ? const Color(0xFF94A3B8)
+                                      : const Color(0xFF64748B),
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }),
+        ],
+      ),
+      /*GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -1055,48 +992,48 @@ class DashboardController extends GetxController {
             ),
           );
         },
-      ),
+      ),*/
     );
   }
 
   Widget summaryStats(bool isDark, {required Map<String, int> counts}) {
     final items = [
-      SummStat(
-        'Total Roles',
-        counts['roles'] ?? 0,
-        Icons.manage_accounts_rounded,
-        const Color(0xFFEC4899),
-      ),
-      SummStat(
-        'Role Permissions',
-        counts['role_permissions'] ?? 0,
-        Icons.security_rounded,
-        const Color(0xFF3B82F6),
-      ),
-      SummStat(
-        'Salary Types',
-        counts['salary_types'] ?? 0,
-        Icons.payments_rounded,
-        const Color(0xFF14B8A6),
-      ),
+      // SummStat(
+      //   'Total Roles',
+      //   counts['roles'] ?? 0,
+      //   Icons.manage_accounts_rounded,
+      //   const Color(0xFFEC4899),
+      // ),
+      // SummStat(
+      //   'Role Permissions',
+      //   counts['role_permissions'] ?? 0,
+      //   Icons.security_rounded,
+      //   const Color(0xFF3B82F6),
+      // ),
+      // SummStat(
+      //   'Salary Types',
+      //   counts['salary_types'] ?? 0,
+      //   Icons.payments_rounded,
+      //   const Color(0xFF14B8A6),
+      // ),
       SummStat(
         'Holidays',
         counts['holidays'] ?? 0,
         Icons.celebration_rounded,
         const Color(0xFF8B5CF6),
       ),
-      SummStat(
-        'Sub Plans',
-        counts['subscription_plans'] ?? 0,
-        Icons.workspace_premium_rounded,
-        const Color(0xFF06B6D4),
-      ),
-      SummStat(
-        'Perm. Requests',
-        counts['permission_requests'] ?? 0,
-        Icons.lock_clock_rounded,
-        const Color(0xFFF59E0B),
-      ),
+      // SummStat(
+      //   'Sub Plans',
+      //   counts['subscription_plans'] ?? 0,
+      //   Icons.workspace_premium_rounded,
+      //   const Color(0xFF06B6D4),
+      // ),
+      // SummStat(
+      //   'Perm. Requests',
+      //   counts['permission_requests'] ?? 0,
+      //   Icons.lock_clock_rounded,
+      //   const Color(0xFFF59E0B),
+      // ),
     ];
     return CardWidget(
       isDark: isDark,
@@ -1187,12 +1124,12 @@ class DashboardController extends GetxController {
   }) {
     final bars = [
       Bar('Orgs', counts['organizations'] ?? 0, const Color(0xFF3B82F6)),
-      Bar('Cos', counts['companies'] ?? 0, const Color(0xFF10B981)),
-      Bar('Depts', counts['departments'] ?? 0, const Color(0xFF8B5CF6)),
+      Bar('Comps', counts['companies'] ?? 0, const Color(0xFF10B981)),
+      // Bar('Depts', counts['departments'] ?? 0, const Color(0xFF8B5CF6)),
       Bar('Emps', counts['employees'] ?? 0, const Color(0xFFF59E0B)),
-      Bar('Users', counts['users'] ?? 0, const Color(0xFFEF4444)),
-      Bar('Roles', counts['roles'] ?? 0, const Color(0xFF06B6D4)),
-      Bar('Leaves', counts['leave_requests'] ?? 0, const Color(0xFFEC4899)),
+      // Bar('Users', counts['users'] ?? 0, const Color(0xFFEF4444)),
+      // Bar('Roles', counts['roles'] ?? 0, const Color(0xFF06B6D4)),
+      // Bar('Leaves', counts['leave_requests'] ?? 0, const Color(0xFFEC4899)),
       Bar('Subs', counts['subscriptions'] ?? 0, const Color(0xFF14B8A6)),
     ];
     final maxVal = bars.fold(1, (m, b) => b.value > m ? b.value : m).toDouble();
@@ -1298,21 +1235,21 @@ class DashboardController extends GetxController {
   }) {
     final allSegs = [
       Seg('Employees', counts['employees'] ?? 0, const Color(0xFF3B82F6)),
-      Seg('Users', counts['users'] ?? 0, const Color(0xFF10B981)),
-      Seg('Departments', counts['departments'] ?? 0, const Color(0xFF8B5CF6)),
-      Seg('Roles', counts['roles'] ?? 0, const Color(0xFFF59E0B)),
+      Seg('Holidays', counts['holidays'] ?? 0, const Color(0xFF10B981)),
+      // Seg('Departments', counts['departments'] ?? 0, const Color(0xFF8B5CF6)),
+      // Seg('Roles', counts['roles'] ?? 0, const Color(0xFFF59E0B)),
       Seg(
         'Subscriptions',
         counts['subscriptions'] ?? 0,
         const Color(0xFFEF4444),
       ),
-      Seg(
-        'Others',
-        (counts['holidays'] ?? 0) +
-            (counts['salary_types'] ?? 0) +
-            (counts['permission_requests'] ?? 0),
-        const Color(0xFF06B6D4),
-      ),
+      // Seg(
+      //   'Others',
+      //   (counts['holidays'] ?? 0) +
+      //       (counts['salary_types'] ?? 0) +
+      //       (counts['permission_requests'] ?? 0),
+      //   const Color(0xFF06B6D4),
+      // ),
     ];
     final segs = allSegs.where((s) => s.value > 0).toList();
     final total = segs.fold(0, (s, e) => s + e.value);

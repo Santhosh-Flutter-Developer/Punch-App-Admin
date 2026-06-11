@@ -11,7 +11,7 @@ class BarShimmer extends StatelessWidget {
       height: 180.0,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
-        children: List.generate(8, (i) {
+        children: List.generate(4, (i) {
           return Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
