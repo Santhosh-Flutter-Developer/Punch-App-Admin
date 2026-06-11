@@ -7,6 +7,7 @@ import 'package:punch_app_admin/presentation/employee_statuses/ui/employee_statu
 import 'package:punch_app_admin/presentation/employees/ui/employees.dart';
 import 'package:punch_app_admin/presentation/holiday_entry/ui/holiday_entry.dart';
 import 'package:punch_app_admin/presentation/organization/ui/organization.dart';
+import 'package:punch_app_admin/presentation/subscriptions/ui/subscription.dart';
 import 'package:punch_app_admin/routes/app_routes.dart';
 
 class AppPages {
@@ -19,5 +20,6 @@ class AppPages {
     GetPage(name: AppRoutes.employees, page: () => Employees()),
     GetPage(name: AppRoutes.employeeStatuses, page: () => EmployeeStatuses()),
     GetPage(name: AppRoutes.holidays, page: () => HolidayEntry()),
+    GetPage(name: AppRoutes.subscriptions, page: () => Subscription()),
   ];
 }

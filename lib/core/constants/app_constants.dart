@@ -5,4 +5,6 @@ class AppConstants {
   static const String tEmployees = 'employees';
   static const String tEmployeeStatus = 'employee_statuses';
   static const String tHolidayEntries = 'holidays';
+  static const String tSubscriptions = 'subscriptions';
+  static const String tSubscriptionPlans = 'subscription_plans';
 }
