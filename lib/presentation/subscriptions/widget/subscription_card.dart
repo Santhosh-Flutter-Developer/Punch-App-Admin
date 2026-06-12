@@ -40,13 +40,15 @@ class SubscriptionCard extends StatelessWidget {
       padding: const EdgeInsets.only(top: 12.0),
       child: Container(
         decoration: BoxDecoration(
-          color: AppTheme.surface,
+          color: isDark ? AppTheme.sidebarLight : AppTheme.surface,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
             color: isExpired
                 ? AppTheme.errorColor.withOpacity(0.25)
                 : isExpiringSoon
                 ? AppTheme.warningColor.withOpacity(0.25)
+                : isDark
+                ? AppTheme.sidebarLight
                 : AppTheme.border,
           ),
           boxShadow: [
@@ -327,10 +329,10 @@ class SubscriptionCard extends StatelessWidget {
           const SizedBox(height: 3),
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 12,
-              color: AppTheme.textPrimary,
+              color: isDark ? Colors.white : AppTheme.textPrimary,
             ),
           ),
         ],

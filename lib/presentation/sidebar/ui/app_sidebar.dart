@@ -12,6 +12,11 @@ import 'package:punch_app_admin/routes/app_routes.dart';
 const items = <NavItem>[
   NavItem('Dashboard', Icons.dashboard_rounded, AppRoutes.dashboard),
   NavItem(
+    'Subscriptions',
+    Icons.subscriptions_rounded,
+    AppRoutes.subscriptions,
+  ),
+  NavItem(
     'Organizations',
     Icons.corporate_fare_rounded,
     AppRoutes.organizations,
@@ -19,32 +24,28 @@ const items = <NavItem>[
   // NavItem('Designations', Icons.manage_accounts_rounded, AppRoutes.roles),
   NavItem('Companies', Icons.business_rounded, AppRoutes.companies),
   // NavItem('Departments', Icons.account_tree_rounded, AppRoutes.departments),
-  NavItem('Employee Statuses', Icons.badge_rounded, AppRoutes.employeeStatuses),
+  // NavItem('Employee Statuses', Icons.badge_rounded, AppRoutes.employeeStatuses),
   // NavItem('Salary Types', Icons.payments_rounded, AppRoutes.salaryTypes),
   NavItem('Employees', Icons.people_rounded, AppRoutes.employees),
-  NavItem('Holiday Entries', Icons.celebration_rounded, AppRoutes.holidays),
+  // NavItem('Holiday Entries', Icons.celebration_rounded, AppRoutes.holidays),
   // NavItem('Leave Requests', Icons.event_busy_rounded, AppRoutes.leaveRequests),
   // NavItem(
   //   'Permission Requests',
   //   Icons.lock_clock_rounded,
   //   AppRoutes.permissionRequests,
   // ),
-  NavItem(
-    'Attendance Reports',
-    Icons.fingerprint_rounded,
-    AppRoutes.attendanceLogs,
-  ),
+  // NavItem(
+  //   'Attendance Reports',
+  //   Icons.fingerprint_rounded,
+  //   AppRoutes.attendanceLogs,
+  // ),
   // NavItem(
   //   'Role Permissions',
   //   Icons.security_rounded,
   //   AppRoutes.rolePermissions,
   // ),
   // NavItem('Payments', Icons.credit_card_rounded, AppRoutes.payments),
-  NavItem(
-    'Subscriptions',
-    Icons.subscriptions_rounded,
-    AppRoutes.subscriptions,
-  ),
+  
   // NavItem(
   //   'Subscription Plans',
   //   Icons.workspace_premium_rounded,

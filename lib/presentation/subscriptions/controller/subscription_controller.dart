@@ -112,6 +112,7 @@ class SubscriptionController extends GetxController {
     bool selected,
     VoidCallback onTap, {
     Color? color,
+    required bool isDark,
   }) {
     final c = color ?? AppTheme.primaryColor;
     return GestureDetector(
@@ -120,9 +121,19 @@ class SubscriptionController extends GetxController {
         duration: const Duration(milliseconds: 180),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
         decoration: BoxDecoration(
-          color: selected ? c : AppTheme.surfaceVariant,
+          color: selected
+              ? c
+              : isDark
+              ? AppTheme.sidebarDark
+              : AppTheme.surfaceVariant,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: selected ? c : AppTheme.border),
+          border: Border.all(
+            color: selected
+                ? c
+                : isDark
+                ? AppTheme.sidebarDark
+                : AppTheme.border,
+          ),
           boxShadow: selected
               ? [
                   BoxShadow(
@@ -212,6 +223,7 @@ class SubscriptionController extends GetxController {
                           'All Plans',
                           selectedPlanFilter.isEmpty,
                           () => setPlan(''),
+                          isDark: isDark,
                         ),
                         const SizedBox(width: 6),
                         ...['trial', 'basic', 'pro', 'premium'].map(
@@ -222,6 +234,7 @@ class SubscriptionController extends GetxController {
                               selectedPlanFilter.value == p,
                               () => setPlan(p),
                               color: colorFor(p),
+                              isDark: isDark,
                             ),
                           ),
                         ),
