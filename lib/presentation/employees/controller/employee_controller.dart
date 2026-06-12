@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:punch_app_admin/presentation/employees/ui/employee_details.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:punch_app_admin/core/constants/app_constants.dart';
 import 'package:punch_app_admin/core/helper/helper.dart';
@@ -39,9 +40,11 @@ class EmployeeController extends GetxController {
         supabase
             .from(AppConstants.tEmployees)
             .select('''
-          id,company_id, full_name, employee_code, email, mobile, gender, doj, is_active,
-          profile_picture,
-          created_at,
+          id, company_id, full_name, employee_code, email, mobile, gender,
+          doj, dob, father_husband_name, address, aadhar_address,
+          country, state, city, pincode, casual_leave, mobile_login,
+          outside_office, is_active, profile_picture, created_at,
+          other_doc_url, aadhar_doc_url,
           companies(name, city),
           departments(name),
           roles(name),
@@ -217,12 +220,17 @@ class EmployeeController extends GetxController {
     final status = employee['employee_statuses'];
     final createdAt = employee['created_at'] != null
         ? DateFormat(
-            'dd MMM yyyy',
+            'MMM d, yyyy',
           ).format(DateTime.parse(employee['created_at']))
         : '';
     return Padding(
       padding: EdgeInsets.only(right: isWide ? 8.0 : 0.0, bottom: 10.0),
-      child: Container(
+      child: GestureDetector(
+        onTap: () => Get.to(
+          () => EmployeeDetail(employee: employee),
+          transition: Transition.rightToLeft,
+        ),
+        child: Container(
         decoration: BoxDecoration(
           color: isDark ? AppTheme.sidebarDark : AppTheme.surface,
           borderRadius: BorderRadius.circular(16),
@@ -415,6 +423,7 @@ class EmployeeController extends GetxController {
           ),
         ),
       ),
+      ),  // GestureDetector
     );
   }
 
