@@ -17,6 +17,26 @@ class EmployeeStatusesController extends GetxController {
   final selectedCompanyId = ''.obs;
   final TextEditingController searchController = TextEditingController();
 
+  // Pagination
+  final currentPage = 1.obs;
+  final rowsPerPage = 10.obs;
+
+  List<Map<String, dynamic>> get paginatedStatuses {
+    final start = (currentPage.value - 1) * rowsPerPage.value;
+    if (start >= filteredStatuses.length) return [];
+    final end = (start + rowsPerPage.value).clamp(0, filteredStatuses.length);
+    return filteredStatuses.sublist(start, end);
+  }
+
+  void setRowsPerPage(int val) {
+    rowsPerPage.value = val;
+    currentPage.value = 1;
+  }
+
+  void setPage(int page) {
+    currentPage.value = page;
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -69,6 +89,7 @@ class EmployeeStatusesController extends GetxController {
           .toList();
     }
     filteredStatuses.value = list;
+    currentPage.value = 1;
   }
 
   void onSearch(String v) => searchQuery.value = v;

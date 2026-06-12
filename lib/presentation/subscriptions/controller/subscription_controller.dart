@@ -17,6 +17,26 @@ class SubscriptionController extends GetxController {
   final selectedStatusFilter = ''.obs;
   final TextEditingController searchController = TextEditingController();
 
+  // Pagination
+  final currentPage = 1.obs;
+  final rowsPerPage = 10.obs;
+
+  List<Map<String, dynamic>> get paginatedSubs {
+    final start = (currentPage.value - 1) * rowsPerPage.value;
+    if (start >= filteredSubs.length) return [];
+    final end = (start + rowsPerPage.value).clamp(0, filteredSubs.length);
+    return filteredSubs.sublist(start, end);
+  }
+
+  void setRowsPerPage(int val) {
+    rowsPerPage.value = val;
+    currentPage.value = 1;
+  }
+
+  void setPage(int page) {
+    currentPage.value = page;
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -77,6 +97,7 @@ class SubscriptionController extends GetxController {
           .toList();
     }
     filteredSubs.value = list;
+    currentPage.value = 1;
   }
 
   void onSearch(String v) => searchQuery.value = v;

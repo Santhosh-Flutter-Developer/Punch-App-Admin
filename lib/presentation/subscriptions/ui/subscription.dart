@@ -5,6 +5,7 @@ import 'package:punch_app_admin/presentation/subscriptions/controller/subscripti
 import 'package:punch_app_admin/presentation/subscriptions/widget/subscription_card.dart';
 import 'package:punch_app_admin/widgets/empty_state.dart';
 import 'package:punch_app_admin/widgets/main_layout.dart';
+import 'package:punch_app_admin/widgets/pagination_controls.dart';
 import 'package:punch_app_admin/widgets/shimmer_list.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 
@@ -63,9 +64,9 @@ class Subscription extends StatelessWidget {
                       ),
                       child: ResponsiveGridRow(
                         children: List.generate(
-                          controller.filteredSubs.length,
+                          controller.paginatedSubs.length,
                           (i) {
-                            final item = controller.filteredSubs[i];
+                            final item = controller.paginatedSubs[i];
                             return ResponsiveGridCol(
                               xl: 4,
                               lg: 4,
@@ -88,6 +89,19 @@ class Subscription extends StatelessWidget {
               );
             }),
           ),
+          Obx(() {
+            if (controller.isLoading.value || controller.filteredSubs.isEmpty) {
+              return const SizedBox.shrink();
+            }
+            return PaginationControls(
+              totalItems: controller.filteredSubs.length,
+              currentPage: controller.currentPage.value,
+              rowsPerPage: controller.rowsPerPage.value,
+              onRowsPerPageChanged: controller.setRowsPerPage,
+              onPageChanged: controller.setPage,
+              isDark: isDark,
+            );
+          }),
         ],
       ),
     );

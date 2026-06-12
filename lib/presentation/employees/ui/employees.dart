@@ -4,6 +4,7 @@ import 'package:punch_app_admin/core/theme/app_theme.dart';
 import 'package:punch_app_admin/presentation/employees/controller/employee_controller.dart';
 import 'package:punch_app_admin/widgets/empty_state.dart';
 import 'package:punch_app_admin/widgets/main_layout.dart';
+import 'package:punch_app_admin/widgets/pagination_controls.dart';
 import 'package:punch_app_admin/widgets/shimmer_list.dart';
 
 class Employees extends StatelessWidget {
@@ -53,6 +54,19 @@ class Employees extends StatelessWidget {
               );
             }),
           ),
+          Obx(() {
+            if (controller.isLoading.value || controller.filteredEmployees.isEmpty) {
+              return const SizedBox.shrink();
+            }
+            return PaginationControls(
+              totalItems: controller.filteredEmployees.length,
+              currentPage: controller.currentPage.value,
+              rowsPerPage: controller.rowsPerPage.value,
+              onRowsPerPageChanged: controller.setRowsPerPage,
+              onPageChanged: controller.setPage,
+              isDark: isDark,
+            );
+          }),
         ],
       ),
     );

@@ -6,6 +6,7 @@ import 'package:punch_app_admin/presentation/employee_statuses/controller/employ
 import 'package:punch_app_admin/presentation/employee_statuses/widgets/employee_status_card.dart';
 import 'package:punch_app_admin/widgets/empty_state.dart';
 import 'package:punch_app_admin/widgets/main_layout.dart';
+import 'package:punch_app_admin/widgets/pagination_controls.dart';
 import 'package:punch_app_admin/widgets/shimmer_list.dart';
 
 class EmployeeStatuses extends StatelessWidget {
@@ -63,9 +64,9 @@ class EmployeeStatuses extends StatelessWidget {
                       ),
                       child: ResponsiveGridRow(
                         children: List.generate(
-                          controller.filteredStatuses.length,
+                          controller.paginatedStatuses.length,
                           (i) {
-                            final item = controller.filteredStatuses[i];
+                            final item = controller.paginatedStatuses[i];
                             return ResponsiveGridCol(
                               xl: 4,
                               lg: 4,
@@ -88,6 +89,19 @@ class EmployeeStatuses extends StatelessWidget {
               );
             }),
           ),
+          Obx(() {
+            if (controller.isLoading.value || controller.filteredStatuses.isEmpty) {
+              return const SizedBox.shrink();
+            }
+            return PaginationControls(
+              totalItems: controller.filteredStatuses.length,
+              currentPage: controller.currentPage.value,
+              rowsPerPage: controller.rowsPerPage.value,
+              onRowsPerPageChanged: controller.setRowsPerPage,
+              onPageChanged: controller.setPage,
+              isDark: isDark,
+            );
+          }),
         ],
       ),
     );

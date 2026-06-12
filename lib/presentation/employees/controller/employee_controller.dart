@@ -21,6 +21,26 @@ class EmployeeController extends GetxController {
   final companies = <Map<String, dynamic>>[].obs;
   final TextEditingController searchController = TextEditingController();
 
+  // Pagination
+  final currentPage = 1.obs;
+  final rowsPerPage = 10.obs;
+
+  List<Map<String, dynamic>> get paginatedEmployees {
+    final start = (currentPage.value - 1) * rowsPerPage.value;
+    if (start >= filteredEmployees.length) return [];
+    final end = (start + rowsPerPage.value).clamp(0, filteredEmployees.length);
+    return filteredEmployees.sublist(start, end);
+  }
+
+  void setRowsPerPage(int val) {
+    rowsPerPage.value = val;
+    currentPage.value = 1;
+  }
+
+  void setPage(int page) {
+    currentPage.value = page;
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -87,6 +107,7 @@ class EmployeeController extends GetxController {
       }).toList();
     }
     filteredEmployees.value = list;
+    currentPage.value = 1;
   }
 
   void onSearch(String v) => searchQuery.value = v;
@@ -185,11 +206,12 @@ class EmployeeController extends GetxController {
   }
 
   Widget buildGrid(BuildContext context, bool isWide, bool isDark) {
+    final items = paginatedEmployees;
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: ResponsiveGridRow(
-          children: List.generate(filteredEmployees.length, (i) {
+          children: List.generate(items.length, (i) {
             return ResponsiveGridCol(
               xl: 4,
               lg: 4,
@@ -197,7 +219,7 @@ class EmployeeController extends GetxController {
               xs: 12,
               sm: 12,
               child: buildListCard(
-                employee: filteredEmployees[i],
+                employee: items[i],
                 isWide: isWide,
                 isDark: isDark,
               ),

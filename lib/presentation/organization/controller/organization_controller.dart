@@ -17,6 +17,10 @@ class OrganizationController extends GetxController {
   final searchQuery = ''.obs;
   final isSubmitting = false.obs;
 
+  // Pagination
+  final currentPage = 1.obs;
+  final rowsPerPage = 10.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -24,6 +28,22 @@ class OrganizationController extends GetxController {
     debounce(searchQuery, (_) {
       applyFilter();
     }, time: const Duration(milliseconds: 300));
+  }
+
+  List<Map<String, dynamic>> get paginatedOrgs {
+    final start = (currentPage.value - 1) * rowsPerPage.value;
+    if (start >= filteredOrgs.length) return [];
+    final end = (start + rowsPerPage.value).clamp(0, filteredOrgs.length);
+    return filteredOrgs.sublist(start, end);
+  }
+
+  void setRowsPerPage(int val) {
+    rowsPerPage.value = val;
+    currentPage.value = 1;
+  }
+
+  void setPage(int page) {
+    currentPage.value = page;
   }
 
   Future<void> fetchOrganizations() async {
@@ -55,6 +75,7 @@ class OrganizationController extends GetxController {
           )
           .toList();
     }
+    currentPage.value = 1;
   }
 
   void onSearch(String val) {

@@ -18,6 +18,26 @@ class HolidayEntryController extends GetxController {
   final selectedCompanyId = ''.obs;
   final TextEditingController searchController = TextEditingController();
 
+  // Pagination
+  final currentPage = 1.obs;
+  final rowsPerPage = 10.obs;
+
+  List<Map<String, dynamic>> get paginatedHolidays {
+    final start = (currentPage.value - 1) * rowsPerPage.value;
+    if (start >= filteredHolidays.length) return [];
+    final end = (start + rowsPerPage.value).clamp(0, filteredHolidays.length);
+    return filteredHolidays.sublist(start, end);
+  }
+
+  void setRowsPerPage(int val) {
+    rowsPerPage.value = val;
+    currentPage.value = 1;
+  }
+
+  void setPage(int page) {
+    currentPage.value = page;
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -66,6 +86,7 @@ class HolidayEntryController extends GetxController {
           .toList();
     }
     filteredHolidays.value = list;
+    currentPage.value = 1;
   }
 
   void onSearch(String v) => searchQuery.value = v;

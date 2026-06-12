@@ -5,6 +5,7 @@ import 'package:punch_app_admin/presentation/holiday_entry/controller/holiday_en
 import 'package:punch_app_admin/presentation/holiday_entry/widgets/holiday_card.dart';
 import 'package:punch_app_admin/widgets/empty_state.dart';
 import 'package:punch_app_admin/widgets/main_layout.dart';
+import 'package:punch_app_admin/widgets/pagination_controls.dart';
 import 'package:punch_app_admin/widgets/shimmer_list.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 
@@ -63,9 +64,9 @@ class HolidayEntry extends StatelessWidget {
                       ),
                       child: ResponsiveGridRow(
                         children: List.generate(
-                          controller.filteredHolidays.length,
+                          controller.paginatedHolidays.length,
                           (i) {
-                            final item = controller.filteredHolidays[i];
+                            final item = controller.paginatedHolidays[i];
                             return ResponsiveGridCol(
                               xl: 4,
                               lg: 4,
@@ -88,6 +89,19 @@ class HolidayEntry extends StatelessWidget {
               );
             }),
           ),
+          Obx(() {
+            if (controller.isLoading.value || controller.filteredHolidays.isEmpty) {
+              return const SizedBox.shrink();
+            }
+            return PaginationControls(
+              totalItems: controller.filteredHolidays.length,
+              currentPage: controller.currentPage.value,
+              rowsPerPage: controller.rowsPerPage.value,
+              onRowsPerPageChanged: controller.setRowsPerPage,
+              onPageChanged: controller.setPage,
+              isDark: isDark,
+            );
+          }),
         ],
       ),
     );

@@ -5,6 +5,7 @@ import 'package:punch_app_admin/core/theme/app_theme.dart';
 import 'package:punch_app_admin/presentation/organization/controller/organization_controller.dart';
 import 'package:punch_app_admin/widgets/empty_state.dart';
 import 'package:punch_app_admin/widgets/main_layout.dart';
+import 'package:punch_app_admin/widgets/pagination_controls.dart';
 
 class Organization extends StatelessWidget {
   Organization({super.key});
@@ -54,6 +55,7 @@ class Organization extends StatelessWidget {
                   color: AppTheme.primaryLight,
                 );
               }
+              final pageItems = controller.paginatedOrgs;
               return RefreshIndicator(
                 onRefresh: controller.fetchOrganizations,
                 child: SingleChildScrollView(
@@ -65,7 +67,7 @@ class Organization extends StatelessWidget {
                       12,
                     ),
                     child: ResponsiveGridRow(
-                      children: List.generate(controller.filteredOrgs.length, (
+                      children: List.generate(pageItems.length, (
                         i,
                       ) {
                         return ResponsiveGridCol(
@@ -77,7 +79,7 @@ class Organization extends StatelessWidget {
                           child: controller.buildCard(
                             isDark,
                             context: context,
-                            org: controller.filteredOrgs[i],
+                            org: pageItems[i],
                             index: i,
                           ),
                         );
@@ -88,6 +90,19 @@ class Organization extends StatelessWidget {
               );
             }),
           ),
+          Obx(() {
+            if (controller.isLoading.value || controller.filteredOrgs.isEmpty) {
+              return const SizedBox.shrink();
+            }
+            return PaginationControls(
+              totalItems: controller.filteredOrgs.length,
+              currentPage: controller.currentPage.value,
+              rowsPerPage: controller.rowsPerPage.value,
+              onRowsPerPageChanged: controller.setRowsPerPage,
+              onPageChanged: controller.setPage,
+              isDark: isDark,
+            );
+          }),
         ],
       ),
     );
