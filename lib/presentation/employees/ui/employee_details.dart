@@ -111,18 +111,19 @@ class _EmployeeDetailState extends State<EmployeeDetail> {
   Widget build(BuildContext context) {
     final isWide = MediaQuery.of(context).size.width >= 800;
     final e = widget.employee;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return isWide
         ? MainLayout(
             title: 'View Employee',
-            child: formWidget(e, isWide), // Scaffold
+            child: formWidget(e, isWide, isDark), // Scaffold
           )
-        : formWidget(e, isWide); // MainLayout
+        : formWidget(e, isWide, isDark); // MainLayout
   }
 
-  Widget formWidget(Map<String, dynamic> e, bool isWide) {
+  Widget formWidget(Map<String, dynamic> e, bool isWide, bool isDark) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF1F5F9),
+      backgroundColor: isDark ? AppTheme.sidebarLight : const Color(0xFFF1F5F9),
       body: Column(
         children: [
           _StepHeader(
@@ -146,13 +147,14 @@ class _EmployeeDetailState extends State<EmployeeDetail> {
               ),
               child: KeyedSubtree(
                 key: ValueKey(_step),
-                child: _buildStep(_step, e, isWide),
+                child: _buildStep(_step, e, isWide, isDark),
               ),
             ),
           ),
           _StepFooter(
             currentStep: _step,
             totalSteps: _stepTitles.length,
+            isDark: isDark,
             onBack: () {
               if (_step > 0) {
                 setState(() => _step--);
@@ -173,16 +175,27 @@ class _EmployeeDetailState extends State<EmployeeDetail> {
     );
   }
 
-  Widget _buildStep(int step, Map<String, dynamic> e, bool isWide) {
+  Widget _buildStep(
+    int step,
+    Map<String, dynamic> e,
+    bool isWide,
+    bool isDark,
+  ) {
     switch (step) {
       case 0:
-        return _StepBasic(e: e, v: _v, d: _date, isWide: isWide);
+        return _StepBasic(
+          e: e,
+          v: _v,
+          d: _date,
+          isWide: isWide,
+          isDark: isDark,
+        );
       case 1:
-        return _StepAddress(e: e, v: _v, isWide: isWide);
+        return _StepAddress(e: e, v: _v, isWide: isWide, isDark: isDark);
       case 2:
-        return _StepWork(e: e, v: _v, b: _bool, isWide: isWide);
+        return _StepWork(e: e, v: _v, b: _bool, isWide: isWide, isDark: isDark);
       case 3:
-        return _StepLoginDocs(e: e, v: _v, docs: _parseDocs());
+        return _StepLoginDocs(e: e, v: _v, docs: _parseDocs(), isDark: isDark);
       default:
         return const SizedBox();
     }
@@ -227,15 +240,15 @@ class _StepHeader extends StatelessWidget {
                 tooltip: 'Back',
               ),
               SizedBox(width: 8),
-              if(!isWide)
-              Text(
-                'View Employee',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
+              if (!isWide)
+                Text(
+                  'View Employee',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
             ],
           ),
           SizedBox(height: 4),
@@ -347,12 +360,14 @@ class _StepHeader extends StatelessWidget {
 class _StepFooter extends StatelessWidget {
   final int currentStep, totalSteps;
   final VoidCallback onBack, onNext;
+  final bool isDark;
 
   const _StepFooter({
     required this.currentStep,
     required this.totalSteps,
     required this.onBack,
     required this.onNext,
+    required this.isDark,
   });
 
   bool get isLast => currentStep == totalSteps - 1;
@@ -362,9 +377,13 @@ class _StepFooter extends StatelessWidget {
     final isWide = MediaQuery.of(context).size.width >= 800;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        border: Border(top: BorderSide(color: AppTheme.border)),
+      decoration: BoxDecoration(
+        color: isDark ? AppTheme.sidebarDark : Colors.white,
+        border: Border(
+          top: BorderSide(
+            color: isDark ? AppTheme.sidebarDark : AppTheme.border,
+          ),
+        ),
       ),
       child: Row(
         children: [
@@ -377,6 +396,9 @@ class _StepFooter extends StatelessWidget {
             ),
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+              side: BorderSide(
+                color: isDark ? AppTheme.sidebarLight : AppTheme.border,
+              ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -439,12 +461,14 @@ class _StepBasic extends StatelessWidget {
   final String Function(dynamic) v;
   final String Function(dynamic) d;
   final bool isWide;
+  final bool isDark;
 
   const _StepBasic({
     required this.e,
     required this.v,
     required this.d,
     required this.isWide,
+    required this.isDark,
   });
 
   String _cap(String s) => s.isEmpty ? s : s[0].toUpperCase() + s.substring(1);
@@ -494,6 +518,7 @@ class _StepBasic extends StatelessWidget {
           _SectionCard(
             title: 'Employee Information',
             icon: Icons.badge_rounded,
+            isDark: isDark,
             children: [
               _TwoCol(
                 isWide: isWide,
@@ -501,11 +526,13 @@ class _StepBasic extends StatelessWidget {
                   'Employee Code *',
                   Icons.tag_rounded,
                   v(e['employee_code']),
+                  isDark: isDark,
                 ),
                 right: _RF(
                   'Full Name *',
                   Icons.person_rounded,
                   v(e['full_name']),
+                  isDark: isDark,
                 ),
               ),
               const SizedBox(height: 16),
@@ -515,8 +542,14 @@ class _StepBasic extends StatelessWidget {
                   'Date of Joining',
                   Icons.calendar_today_rounded,
                   d(e['doj']),
+                  isDark: isDark,
                 ),
-                right: _RF('Date of Birth *', Icons.cake_rounded, d(e['dob'])),
+                right: _RF(
+                  'Date of Birth *',
+                  Icons.cake_rounded,
+                  d(e['dob']),
+                  isDark: isDark,
+                ),
               ),
               const SizedBox(height: 16),
               _TwoCol(
@@ -526,11 +559,13 @@ class _StepBasic extends StatelessWidget {
                   Icons.wc_rounded,
                   _cap(v(e['gender'])),
                   isDropdown: true,
+                  isDark: isDark,
                 ),
                 right: _RF(
                   'Father / Husband Name',
                   Icons.people_rounded,
                   v(e['father_husband_name']),
+                  isDark: isDark,
                 ),
               ),
               const SizedBox(height: 16),
@@ -547,6 +582,7 @@ class _StepBasic extends StatelessWidget {
                           size: 18,
                         )
                       : null,
+                  isDark: isDark,
                 ),
                 right: _RF(
                   'Email Address *',
@@ -559,6 +595,7 @@ class _StepBasic extends StatelessWidget {
                           size: 18,
                         )
                       : null,
+                  isDark: isDark,
                 ),
               ),
               if (v(e['mobile']).isNotEmpty) ...[
@@ -580,6 +617,7 @@ class _StepBasic extends StatelessWidget {
           _SectionCard(
             title: 'Status',
             icon: Icons.toggle_on_rounded,
+            isDark: isDark,
             children: [
               _RF(
                 'Employee Status',
@@ -588,6 +626,7 @@ class _StepBasic extends StatelessWidget {
                     ? v(e['employee_statuses']['name'])
                     : '',
                 isDropdown: true,
+                isDark: isDark,
               ),
             ],
           ),
@@ -605,8 +644,14 @@ class _StepAddress extends StatelessWidget {
   final Map<String, dynamic> e;
   final String Function(dynamic) v;
   final bool isWide;
+  final bool isDark;
 
-  const _StepAddress({required this.e, required this.v, required this.isWide});
+  const _StepAddress({
+    required this.e,
+    required this.v,
+    required this.isWide,
+    required this.isDark,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -621,19 +666,46 @@ class _StepAddress extends StatelessWidget {
           _SectionCard(
             title: 'Residential Address',
             icon: Icons.home_rounded,
+            isDark: isDark,
             children: [
-              _RF('Full Address', Icons.home_outlined, addr, maxLines: 3),
-              const SizedBox(height: 16),
-              _TwoCol(
-                isWide: isWide,
-                left: _RF('Country', Icons.flag_rounded, v(e['country'])),
-                right: _RF('State', Icons.map_rounded, v(e['state'])),
+              _RF(
+                'Full Address',
+                Icons.home_outlined,
+                addr,
+                maxLines: 3,
+                isDark: isDark,
               ),
               const SizedBox(height: 16),
               _TwoCol(
                 isWide: isWide,
-                left: _RF('City', Icons.location_city_rounded, v(e['city'])),
-                right: _RF('Pincode', Icons.pin_drop_rounded, v(e['pincode'])),
+                left: _RF(
+                  'Country',
+                  Icons.flag_rounded,
+                  v(e['country']),
+                  isDark: isDark,
+                ),
+                right: _RF(
+                  'State',
+                  Icons.map_rounded,
+                  v(e['state']),
+                  isDark: isDark,
+                ),
+              ),
+              const SizedBox(height: 16),
+              _TwoCol(
+                isWide: isWide,
+                left: _RF(
+                  'City',
+                  Icons.location_city_rounded,
+                  v(e['city']),
+                  isDark: isDark,
+                ),
+                right: _RF(
+                  'Pincode',
+                  Icons.pin_drop_rounded,
+                  v(e['pincode']),
+                  isDark: isDark,
+                ),
               ),
             ],
           ),
@@ -641,6 +713,7 @@ class _StepAddress extends StatelessWidget {
           _SectionCard(
             title: 'Aadhar Address',
             icon: Icons.credit_card_rounded,
+            isDark: isDark,
             children: [
               // Same as Full Address checkbox
               Row(
@@ -677,6 +750,7 @@ class _StepAddress extends StatelessWidget {
                 Icons.credit_card_outlined,
                 aadhar,
                 maxLines: 3,
+                isDark: isDark,
               ),
             ],
           ),
@@ -695,12 +769,14 @@ class _StepWork extends StatelessWidget {
   final String Function(dynamic) v;
   final bool Function(dynamic) b;
   final bool isWide;
+  final bool isDark;
 
   const _StepWork({
     required this.e,
     required this.v,
     required this.b,
     required this.isWide,
+    required this.isDark,
   });
 
   @override
@@ -714,12 +790,14 @@ class _StepWork extends StatelessWidget {
           _SectionCard(
             title: 'Company',
             icon: Icons.business_rounded,
+            isDark: isDark,
             children: [
               _RF(
                 'Company / Branch *',
                 Icons.business_rounded,
                 company != null ? v(company['name']) : '',
                 isDropdown: true,
+                isDark: isDark,
               ),
             ],
           ),
@@ -727,11 +805,13 @@ class _StepWork extends StatelessWidget {
           _SectionCard(
             title: 'Work Settings',
             icon: Icons.tune_rounded,
+            isDark: isDark,
             children: [
               _RF(
                 'Casual Leave (days/year)',
                 Icons.event_busy_rounded,
                 '${e['casual_leave'] ?? 12}',
+                isDark: isDark,
               ),
               const SizedBox(height: 16),
               _ToggleRow(
@@ -739,6 +819,7 @@ class _StepWork extends StatelessWidget {
                 label: 'Mobile Login Allowed',
                 subtitle: 'Can login via mobile app',
                 value: b(e['mobile_login']),
+                isDark: isDark,
               ),
               const SizedBox(height: 10),
               _ToggleRow(
@@ -746,6 +827,7 @@ class _StepWork extends StatelessWidget {
                 label: 'Outside Office Allowed',
                 subtitle: 'Can mark attendance outside office',
                 value: b(e['outside_office']),
+                isDark: isDark,
               ),
               const SizedBox(height: 10),
               _ToggleRow(
@@ -754,6 +836,7 @@ class _StepWork extends StatelessWidget {
                 subtitle: 'Inactive employees cannot login',
                 value: b(e['is_active']),
                 color: AppTheme.accentGreen,
+                isDark: isDark,
               ),
             ],
           ),
@@ -771,8 +854,14 @@ class _StepLoginDocs extends StatelessWidget {
   final Map<String, dynamic> e;
   final String Function(dynamic) v;
   final List<Map<String, dynamic>> docs;
+  final bool isDark;
 
-  const _StepLoginDocs({required this.e, required this.v, required this.docs});
+  const _StepLoginDocs({
+    required this.e,
+    required this.v,
+    required this.docs,
+    required this.isDark,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -785,12 +874,14 @@ class _StepLoginDocs extends StatelessWidget {
           _SectionCard(
             title: 'Login Credentials',
             icon: Icons.lock_rounded,
+            isDark: isDark,
             children: [
               _RF(
                 'Username',
                 Icons.person_outline_rounded,
                 v(e['employee_code']),
                 hint: 'Username',
+                isDark: isDark,
               ),
               const SizedBox(height: 16),
               // Password — always empty in view mode (not stored)
@@ -800,6 +891,7 @@ class _StepLoginDocs extends StatelessWidget {
                 '',
                 hint: 'Leave blank for no login access',
                 showVisibilityIcon: true,
+                isDark: isDark,
               ),
               const SizedBox(height: 12),
               Container(
@@ -835,6 +927,7 @@ class _StepLoginDocs extends StatelessWidget {
           _SectionCard(
             title: 'Documents',
             icon: Icons.attach_file_rounded,
+            isDark: isDark,
             trailing: TextButton.icon(
               onPressed: null,
               icon: const Icon(Icons.upload_file_rounded, size: 16),
@@ -915,10 +1008,12 @@ class _StepLoginDocs extends StatelessWidget {
                               children: [
                                 Text(
                                   name,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.w600,
-                                    color: AppTheme.textPrimary,
+                                    color: isDark
+                                        ? Colors.white
+                                        : AppTheme.textPrimary,
                                   ),
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -953,21 +1048,25 @@ class _SectionCard extends StatelessWidget {
   final IconData icon;
   final List<Widget> children;
   final Widget? trailing;
+  final bool isDark;
 
   const _SectionCard({
     required this.title,
     required this.icon,
     required this.children,
     this.trailing,
+    required this.isDark,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? AppTheme.sidebarDark : const Color(0xFFF1F5F9),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppTheme.border),
+        border: Border.all(
+          color: isDark ? AppTheme.sidebarDark : AppTheme.border,
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.03),
@@ -986,7 +1085,11 @@ class _SectionCard extends StatelessWidget {
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(16),
               ),
-              border: const Border(bottom: BorderSide(color: AppTheme.border)),
+              border: Border(
+                bottom: BorderSide(
+                  color: isDark ? AppTheme.sidebarDark : AppTheme.border,
+                ),
+              ),
             ),
             child: Row(
               children: [
@@ -1002,10 +1105,10 @@ class _SectionCard extends StatelessWidget {
                 const SizedBox(width: 10),
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
-                    color: AppTheme.textPrimary,
+                    color: isDark ? Colors.white : AppTheme.textPrimary,
                   ),
                 ),
                 if (trailing != null) ...[const Spacer(), trailing!],
@@ -1060,6 +1163,7 @@ Widget _RF(
   bool showVisibilityIcon = false,
   Widget? suffix,
   int maxLines = 1,
+  required bool isDark,
 }) {
   final isEmpty = value.isEmpty;
   final display = isEmpty ? (hint ?? '') : value;
@@ -1083,9 +1187,11 @@ Widget _RF(
           vertical: maxLines > 1 ? 12 : 14,
         ),
         decoration: BoxDecoration(
-          color: const Color(0xFFF8FAFC),
+          color: isDark ? AppTheme.sidebarLight : const Color(0xFFF8FAFC),
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: AppTheme.border),
+          border: Border.all(
+            color: isDark ? AppTheme.sidebarLight : AppTheme.border,
+          ),
         ),
         child: Row(
           crossAxisAlignment: maxLines > 1
@@ -1103,7 +1209,11 @@ Widget _RF(
                     : TextOverflow.ellipsis,
                 style: TextStyle(
                   fontSize: 14,
-                  color: isEmpty ? AppTheme.textTertiary : AppTheme.textPrimary,
+                  color: isDark
+                      ? Colors.white
+                      : isEmpty
+                      ? AppTheme.textTertiary
+                      : AppTheme.textPrimary,
                 ),
               ),
             ),
@@ -1145,12 +1255,14 @@ class _ToggleRow extends StatelessWidget {
   final String label, subtitle;
   final bool value;
   final Color color;
+  final bool isDark;
 
   const _ToggleRow({
     required this.icon,
     required this.label,
     required this.subtitle,
     required this.value,
+    required this.isDark,
     this.color = AppTheme.primaryColor,
   });
 
@@ -1190,10 +1302,10 @@ class _ToggleRow extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
-                    color: AppTheme.textPrimary,
+                    color: isDark ? Colors.white : AppTheme.textPrimary,
                   ),
                 ),
                 Text(
