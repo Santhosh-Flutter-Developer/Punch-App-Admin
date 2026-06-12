@@ -1235,7 +1235,7 @@ class DashboardController extends GetxController {
   }) {
     final allSegs = [
       Seg('Employees', counts['employees'] ?? 0, const Color(0xFF3B82F6)),
-      Seg('Holidays', counts['holidays'] ?? 0, const Color(0xFF10B981)),
+      Seg('Companies', counts['companies'] ?? 0, const Color(0xFF10B981)),
       // Seg('Departments', counts['departments'] ?? 0, const Color(0xFF8B5CF6)),
       // Seg('Roles', counts['roles'] ?? 0, const Color(0xFFF59E0B)),
       Seg(
@@ -1324,7 +1324,7 @@ class DashboardController extends GetxController {
                                         ),
                                       ),
                                       // Center text
-                                      if (progress > 0.7)
+                                      /*if (progress > 0.7)
                                         Opacity(
                                           opacity: ((progress - 0.7) / 0.3)
                                               .clamp(0, 1),
@@ -1353,7 +1353,7 @@ class DashboardController extends GetxController {
                                               ),
                                             ],
                                           ),
-                                        ),
+                                        ),*/
                                     ],
                                   ),
                                 );

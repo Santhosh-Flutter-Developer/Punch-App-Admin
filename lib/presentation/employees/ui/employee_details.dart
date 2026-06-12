@@ -122,55 +122,57 @@ class _EmployeeDetailState extends State<EmployeeDetail> {
   }
 
   Widget formWidget(Map<String, dynamic> e, bool isWide, bool isDark) {
-    return Scaffold(
-      backgroundColor: isDark ? AppTheme.sidebarLight : const Color(0xFFF1F5F9),
-      body: Column(
-        children: [
-          _StepHeader(
-            currentStep: _step,
-            titles: _stepTitles,
-            icons: _stepIcons,
-            onTap: (i) => setState(() => _step = i),
-          ),
-          Expanded(
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 250),
-              transitionBuilder: (child, anim) => FadeTransition(
-                opacity: anim,
-                child: SlideTransition(
-                  position: Tween<Offset>(
-                    begin: const Offset(0.04, 0),
-                    end: Offset.zero,
-                  ).animate(anim),
-                  child: child,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: isDark ? AppTheme.sidebarLight : const Color(0xFFF1F5F9),
+        body: Column(
+          children: [
+            _StepHeader(
+              currentStep: _step,
+              titles: _stepTitles,
+              icons: _stepIcons,
+              onTap: (i) => setState(() => _step = i),
+            ),
+            Expanded(
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 250),
+                transitionBuilder: (child, anim) => FadeTransition(
+                  opacity: anim,
+                  child: SlideTransition(
+                    position: Tween<Offset>(
+                      begin: const Offset(0.04, 0),
+                      end: Offset.zero,
+                    ).animate(anim),
+                    child: child,
+                  ),
+                ),
+                child: KeyedSubtree(
+                  key: ValueKey(_step),
+                  child: _buildStep(_step, e, isWide, isDark),
                 ),
               ),
-              child: KeyedSubtree(
-                key: ValueKey(_step),
-                child: _buildStep(_step, e, isWide, isDark),
-              ),
             ),
-          ),
-          _StepFooter(
-            currentStep: _step,
-            totalSteps: _stepTitles.length,
-            isDark: isDark,
-            onBack: () {
-              if (_step > 0) {
-                setState(() => _step--);
-              } else {
-                Navigator.of(context).pop();
-              }
-            },
-            onNext: () {
-              if (_step < _stepTitles.length - 1) {
-                setState(() => _step++);
-              } else {
-                Navigator.of(context).pop();
-              }
-            },
-          ),
-        ],
+            _StepFooter(
+              currentStep: _step,
+              totalSteps: _stepTitles.length,
+              isDark: isDark,
+              onBack: () {
+                if (_step > 0) {
+                  setState(() => _step--);
+                } else {
+                  Navigator.of(context).pop();
+                }
+              },
+              onNext: () {
+                if (_step < _stepTitles.length - 1) {
+                  setState(() => _step++);
+                } else {
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

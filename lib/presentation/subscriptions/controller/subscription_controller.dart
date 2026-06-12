@@ -302,16 +302,19 @@ class SubscriptionController extends GetxController {
               if (s['expiry_date'] == null) return false;
               return DateTime.parse(s['expiry_date']).isBefore(DateTime.now());
             }).length;
-            return Row(
-              children: [
-                statBadge('${subs.length}', 'Total', AppTheme.primaryColor),
-                const SizedBox(width: 8),
-                statBadge('$active', 'Active', AppTheme.success),
-                const SizedBox(width: 8),
-                statBadge('$expiring', 'Expiring Soon', AppTheme.warningColor),
-                const SizedBox(width: 8),
-                statBadge('$expired', 'Expired', AppTheme.errorColor),
-              ],
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  statBadge('${subs.length}', 'Total', AppTheme.primaryColor),
+                  const SizedBox(width: 8),
+                  statBadge('$active', 'Active', AppTheme.success),
+                  const SizedBox(width: 8),
+                  statBadge('$expiring', 'Expiring Soon', AppTheme.warningColor),
+                  const SizedBox(width: 8),
+                  statBadge('$expired', 'Expired', AppTheme.errorColor),
+                ],
+              ),
             );
           }),
         ],

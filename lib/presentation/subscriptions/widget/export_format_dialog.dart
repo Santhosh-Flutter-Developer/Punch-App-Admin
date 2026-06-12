@@ -9,6 +9,7 @@ class ExportFormatDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      insetPadding: EdgeInsets.all(12),
       backgroundColor: Colors.transparent,
       child: Container(
         width: 360,

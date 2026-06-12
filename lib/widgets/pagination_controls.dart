@@ -28,9 +28,7 @@ class PaginationControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final totalPages = totalItems == 0
-        ? 1
-        : (totalItems / rowsPerPage).ceil();
+    final totalPages = totalItems == 0 ? 1 : (totalItems / rowsPerPage).ceil();
     final safePage = currentPage.clamp(1, totalPages);
 
     final start = totalItems == 0 ? 0 : ((safePage - 1) * rowsPerPage) + 1;
@@ -41,14 +39,15 @@ class PaginationControls extends StatelessWidget {
     final rowsPerPageWidget = Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          'Rows per page:',
-          style: TextStyle(
-            fontSize: 12,
-            color: isDark ? AppTheme.textTertiary : AppTheme.textSecondary,
-            fontWeight: FontWeight.w500,
+        if (isWide)
+          Text(
+            'Rows per page:',
+            style: TextStyle(
+              fontSize: 12,
+              color: isDark ? AppTheme.textTertiary : AppTheme.textSecondary,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-        ),
         const SizedBox(width: 8),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
@@ -56,9 +55,7 @@ class PaginationControls extends StatelessWidget {
             color: isDark ? AppTheme.sidebarLight : AppTheme.surfaceVariant,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: isDark
-                  ? const Color(0xFF334155)
-                  : AppTheme.border,
+              color: isDark ? const Color(0xFF334155) : AppTheme.border,
             ),
           ),
           child: DropdownButtonHideUnderline(
@@ -78,10 +75,7 @@ class PaginationControls extends StatelessWidget {
               dropdownColor: isDark ? AppTheme.sidebarLight : AppTheme.surface,
               items: rowsPerPageOptions
                   .map(
-                    (e) => DropdownMenuItem<int>(
-                      value: e,
-                      child: Text('$e'),
-                    ),
+                    (e) => DropdownMenuItem<int>(value: e, child: Text('$e')),
                   )
                   .toList(),
               onChanged: (val) {
@@ -147,33 +141,34 @@ class PaginationControls extends StatelessWidget {
           ),
         ),
       ),
-      child: isWide
-          ? Row(
+      child:
+          // isWide
+          //     ?
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 rowsPerPageWidget,
                 Row(
-                  children: [
-                    rangeText,
-                    const SizedBox(width: 16),
-                    navControls,
-                  ],
+                  children: [rangeText, const SizedBox(width: 16), navControls],
                 ),
-              ],
-            )
-          : Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    rowsPerPageWidget,
-                    rangeText,
-                  ],
-                ),
-                const SizedBox(height: 8),
-                navControls,
               ],
             ),
+          ),
+      // : Column(
+      //     children: [
+      //       Row(
+      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //         children: [
+      //           rowsPerPageWidget,
+      //           rangeText,
+      //         ],
+      //       ),
+      //       const SizedBox(height: 8),
+      //       navControls,
+      //     ],
+      //   ),
     );
   }
 
