@@ -25,6 +25,18 @@ class Subscription extends StatelessWidget {
       title: "Subscriptions",
       actions: [
         isWide
+            ? TextButton.icon(
+                onPressed: () => controller.showExportMenu(context),
+                icon: const Icon(Icons.download_rounded, size: 15),
+                label: const Text('Export', style: TextStyle(fontSize: 13)),
+              )
+            : IconButton(
+                onPressed: () => controller.showExportMenu(context),
+                icon: const Icon(Icons.download_rounded),
+                tooltip: 'Export',
+              ),
+        const SizedBox(width: 4),
+        isWide
             ?
               // Refresh
               TextButton.icon(

@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:punch_app_admin/core/constants/app_constants.dart';
 import 'package:punch_app_admin/core/helper/helper.dart';
 import 'package:punch_app_admin/core/theme/app_theme.dart';
+import 'package:punch_app_admin/presentation/subscriptions/widget/export_format_dialog.dart';
+import 'package:punch_app_admin/services/subscription_export_service.dart';
 import 'package:punch_app_admin/widgets/search_field.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -106,6 +108,45 @@ class SubscriptionController extends GetxController {
       selectedPlanFilter.value = p == selectedPlanFilter.value ? '' : p;
   void setStatus(String s) =>
       selectedStatusFilter.value = s == selectedStatusFilter.value ? '' : s;
+
+  Future<void> showExportMenu(BuildContext context) async {
+    final rows = filteredSubs.toList();
+    if (rows.isEmpty) {
+      showError('No subscription data to export.');
+      return;
+    }
+
+    final format = await showDialog<ExportFormat>(
+      context: context,
+      barrierDismissible: true,
+      builder: (_) => const ExportFormatDialog(),
+    );
+
+    if (format == null || !context.mounted) return;
+
+    try {
+      if (format == ExportFormat.pdf) {
+        showSuccess('Generating PDF…');
+        await SubscriptionExportService.exportPDF(
+          context: context,
+          rows: rows,
+          exportedBy: 'Super Admin',
+        );
+      } else {
+        showSuccess('Generating Excel…');
+        await SubscriptionExportService.exportExcel(
+          context: context,
+          rows: rows,
+          exportedBy: 'Super Admin',
+        );
+      }
+    } catch (e) {
+      debugPrint('[Export] error: $e');
+      if (context.mounted) {
+        showError('Export failed: $e');
+      }
+    }
+  }
 
   Widget planChip(
     String label,
